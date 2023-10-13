@@ -4,5 +4,8 @@
   "main": "index.js",
   "repository": "git@github.com:tiagoluizpoli/clean-ts-api.git",
   "author": "Tiago Poli <tiagoluizpoli@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "git-commit-msg-linter": "^5.0.4"
+  }
 }
