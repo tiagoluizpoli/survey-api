@@ -15,7 +15,7 @@ export class SignUpController implements Controller {
     private readonly addAccount: AddAccount,
   ) {}
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  handle = (httpRequest: HttpRequest): HttpResponse => {
+  handle = async (httpRequest: HttpRequest): Promise<HttpResponse> => {
     try {
       const requiredFields = [
         'name',
@@ -37,7 +37,7 @@ export class SignUpController implements Controller {
       if (!this.emailValidator.isValid(email)) {
         return badRequest(new InvalidParamError('email'));
       }
-      const account = this.addAccount.add({
+      const account = await this.addAccount.add({
         name,
         email,
         password,
