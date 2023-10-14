@@ -6,7 +6,8 @@ interface MakeSutResult {
   sut: SignUpController;
   emailValidatorStub: EmailValidator;
 }
-const makeSut = (): MakeSutResult => {
+
+const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     isValid(email: string): boolean {
       if (email) {
@@ -16,7 +17,23 @@ const makeSut = (): MakeSutResult => {
       return true;
     }
   }
-  const emailValidatorStub = new EmailValidatorStub();
+  return new EmailValidatorStub();
+};
+const makeEmailValidatorWithError = (): EmailValidator => {
+  class EmailValidatorStub implements EmailValidator {
+    isValid(email: string): boolean {
+      if (email) {
+        // eslint-disable-next-line no-console
+        console.log(email);
+      }
+      throw new Error();
+    }
+  }
+  return new EmailValidatorStub();
+};
+
+const makeSut = (): MakeSutResult => {
+  const emailValidatorStub = makeEmailValidator();
   const sut = new SignUpController(emailValidatorStub);
   return {
     sut,
@@ -114,16 +131,7 @@ describe('SignUp Controller', () => {
   });
 
   test('Shoud return 500 if emailValidator throws', () => {
-    class EmailValidatorStub implements EmailValidator {
-      isValid(email: string): boolean {
-        if (email) {
-          // eslint-disable-next-line no-console
-          console.log(email);
-        }
-        throw new Error();
-      }
-    }
-    const emailValidatorStub = new EmailValidatorStub();
+    const emailValidatorStub = makeEmailValidatorWithError();
     const sut = new SignUpController(emailValidatorStub);
 
     const httpRequest = {
