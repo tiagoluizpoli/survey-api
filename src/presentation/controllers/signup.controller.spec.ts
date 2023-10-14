@@ -1,11 +1,8 @@
+import { randomUUID } from 'crypto';
+import { AddAccount, AddAccountModel, AccountModel } from '../../domain';
 import { InvalidParamError, MissingParamError, ServerError } from '../errors';
 import { EmailValidator } from '../protocols';
 import { SignUpController } from './signup.controller';
-
-interface MakeSutResult {
-  sut: SignUpController;
-  emailValidatorStub: EmailValidator;
-}
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
@@ -20,12 +17,34 @@ const makeEmailValidator = (): EmailValidator => {
   return new EmailValidatorStub();
 };
 
+const makeAddAccount = (): AddAccount => {
+  class AddAccountStub implements AddAccount {
+    add(account: AddAccountModel): AccountModel {
+      const fakeAccount: AccountModel = {
+        id: randomUUID(),
+        name: account.name,
+        email: account.email,
+        password: account.password,
+      };
+      return fakeAccount;
+    }
+  }
+  return new AddAccountStub();
+};
+
+interface MakeSutResult {
+  sut: SignUpController;
+  emailValidatorStub: EmailValidator;
+  addAccountStub: AddAccount;
+}
 const makeSut = (): MakeSutResult => {
   const emailValidatorStub = makeEmailValidator();
-  const sut = new SignUpController(emailValidatorStub);
+  const addAccountStub = makeAddAccount();
+  const sut = new SignUpController(emailValidatorStub, addAccountStub);
   return {
     sut,
     emailValidatorStub,
+    addAccountStub,
   };
 };
 
@@ -135,6 +154,26 @@ describe('SignUp Controller', () => {
     sut.handle(httpRequest);
 
     expect(isValidSpy).toHaveBeenCalledWith('any@main.com');
+  });
+
+  test('Shoud call AddAccount with correct values', () => {
+    const { sut, addAccountStub } = makeSut();
+    const addSpy = jest.spyOn(addAccountStub, 'add');
+    const httpRequest = {
+      body: {
+        name: 'any_name',
+        email: 'any@main.com',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    };
+    sut.handle(httpRequest);
+
+    expect(addSpy).toHaveBeenCalledWith({
+      name: 'any_name',
+      email: 'any@main.com',
+      password: 'any_password',
+    });
   });
 
   test('Shoud return 500 if emailValidator throws', () => {

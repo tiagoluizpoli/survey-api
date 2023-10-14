@@ -14,12 +14,12 @@
     "forceConsistentCasingInFileNames": true,
     "strict": true,
     "noEmit": true,
-    "baseUrl": ".",
-    "paths": {
-      "@/src/*": [
-        "src/*"
-      ],
-    }
+    // "baseUrl": ".",
+    // "paths": {
+    //   "@/src/*": [
+    //     "src/*"
+    //   ],
+    // }
   },
   "exclude": [
     "node_modules"
