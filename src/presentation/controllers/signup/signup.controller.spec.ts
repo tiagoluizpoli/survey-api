@@ -1,8 +1,13 @@
 import { randomUUID } from 'crypto';
-import { AddAccount, AddAccountModel, AccountModel } from '../../domain';
-import { InvalidParamError, MissingParamError, ServerError } from '../errors';
-import { EmailValidator } from '../protocols';
+import { AddAccount, AddAccountModel, AccountModel } from '../../../domain';
+import {
+  InvalidParamError,
+  MissingParamError,
+  ServerError,
+} from '../../errors';
+
 import { SignUpController } from './signup.controller';
+import { EmailValidator } from '../../protocols';
 
 const makeEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
