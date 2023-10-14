@@ -5,6 +5,9 @@
   "repository": "git@github.com:tiagoluizpoli/clean-ts-api.git",
   "author": "Tiago Poli <tiagoluizpoli@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "husky:prepare": "husky install"
+  },
   "devDependencies": {
     "@types/node": "^20.8.5",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
@@ -14,6 +17,8 @@
     "eslint-plugin-n": "^15.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "git-commit-msg-linter": "^5.0.4",
+    "husky": "^8.0.3",
+    "lint-staged": "^14.0.1",
     "typescript": "*"
   }
 }
