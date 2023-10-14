@@ -1,8 +1,9 @@
 import { MissingParamError } from '../errors/missingParam.error';
 import { badRequest } from '../helpers/httpHelper';
+import { Controller } from '../protocols/controller';
 import { HttpRequest, HttpResponse } from '../protocols/http';
 
-export class SignUpController {
+export class SignUpController implements Controller {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handle = (httpRequest: HttpRequest): HttpResponse => {
     const requiredFields = [
