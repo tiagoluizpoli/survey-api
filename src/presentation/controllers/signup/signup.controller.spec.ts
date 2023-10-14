@@ -1,4 +1,3 @@
-import { randomUUID } from 'crypto';
 import { AddAccount, AddAccountModel, AccountModel } from '../../../domain';
 import {
   InvalidParamError,
@@ -26,7 +25,7 @@ const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     add(account: AddAccountModel): AccountModel {
       const fakeAccount: AccountModel = {
-        id: randomUUID(),
+        id: 'valid_id',
         name: account.name,
         email: account.email,
         password: account.password,
@@ -217,5 +216,26 @@ describe('SignUp Controller', () => {
     const httpResponse = sut.handle(httpRequest);
     expect(httpResponse.statusCode).toBe(500);
     expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  test('Shoud return 200 if valid data is provided', () => {
+    const { sut } = makeSut();
+
+    const httpRequest = {
+      body: {
+        name: 'valid_name',
+        email: 'valid@main.com',
+        password: 'valid_password',
+        passwordConfirmation: 'valid_password',
+      },
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(200);
+    expect(httpResponse.body).toEqual({
+      id: 'valid_id',
+      name: 'valid_name',
+      email: 'valid@main.com',
+      password: 'valid_password',
+    });
   });
 });
