@@ -1,4 +1,4 @@
-import type { Config } from 'jest'
+import type { Config } from 'jest';
 
 const config: Config = {
   roots: ['<rootDir>/src'],
@@ -7,8 +7,8 @@ const config: Config = {
   coverageDirectory: 'coverage',
   coverageProvider: 'v8',
   transform: {
-    '.+\\.ts$': 'ts-jest'
-  }
-}
+    '.+\\.ts$': 'ts-jest',
+  },
+};
 
-export default config
+export default config;

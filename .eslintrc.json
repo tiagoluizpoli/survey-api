@@ -1,6 +1,50 @@
 {
-    "extends": "standard-with-typescript",
-    "parserOptions": {
-        "project": "./tsconfig.json"
-    }
+  "parser": "@typescript-eslint/parser",
+  "env": {
+    "es2021": true,
+    "node": true
+  },
+  "plugins": [
+    "prettier",
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "overrides": [],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "sourceType": "module"
+  },
+  "settings": {},
+  "ignorePatterns": [
+    "node_modules/",
+    "_explicacoes/"
+  ],
+  "rules": {
+    "no-console": [
+      "error",
+      {
+        "allow": [
+          "warn",
+          "error"
+        ]
+      }
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "endOfLine": "auto",
+        "printWidth": 80,
+        "semi": true,
+        "doubleQuote": false,
+        "jsxSingleQuote": true,
+        "singleQuote": true,
+        "useTabs": false,
+        "tabWidth": 2
+      }
+    ]
+  }
 }
