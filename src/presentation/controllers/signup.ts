@@ -1,5 +1,6 @@
 export class SignUpController {
-  handle = (httpRequest: unknown): unknown => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handle = (httpRequest: any): any => {
     return {
       httpRequest,
       statusCode: 400,
