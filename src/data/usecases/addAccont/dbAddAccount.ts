@@ -3,8 +3,7 @@ import {
   AddAccountModel,
   AddAccount as AddAccountProtocol,
 } from '../../../domain';
-import { AddAccountRepository } from '../../protocols';
-import { Encrypter } from '../../protocols/encrypter';
+import { AddAccountRepository, Encrypter } from '../../protocols';
 
 export class DbAddAccount implements AddAccountProtocol {
   constructor(
