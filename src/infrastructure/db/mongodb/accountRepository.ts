@@ -1,7 +1,7 @@
 import { WithId } from 'mongodb';
 import { AddAccountRepository } from '../../../data';
 import { AddAccountModel, AccountModel } from '../../../domain';
-import { MongoHelper, map } from './helpers';
+import { MongoHelper } from './helpers';
 
 export class AccountMongoRepository implements AddAccountRepository {
   constructor() {}
@@ -12,6 +12,6 @@ export class AccountMongoRepository implements AddAccountRepository {
       _id: result.insertedId,
     });
 
-    return map(account);
+    return MongoHelper.map(account);
   };
 }

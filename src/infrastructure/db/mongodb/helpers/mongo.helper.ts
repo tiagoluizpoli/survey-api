@@ -1,4 +1,4 @@
-import { Collection, MongoClient } from 'mongodb';
+import { Collection, MongoClient, WithId } from 'mongodb';
 
 export const MongoHelper = {
   client: null as unknown as MongoClient,
@@ -11,5 +11,11 @@ export const MongoHelper = {
 
   getCollection(name: string): Collection {
     return this.client.db().collection(name);
+  },
+  map<T>(collection: WithId<T> | null) {
+    const { _id, ...newAccount } = collection as WithId<T>;
+
+    const refatoredAccount = { ...newAccount, id: _id.toString() };
+    return refatoredAccount;
   },
 };

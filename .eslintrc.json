@@ -24,6 +24,7 @@
     "_explicacoes/"
   ],
   "rules": {
+    "@typescript-eslint/ban-types": "off",
     "no-console": [
       "error",
       {
