@@ -38,16 +38,14 @@ describe('Bcrypt Adapter', () => {
     expect(hashedValue).toBe('hashed_password');
   });
 
-  // it('should throw if bcrypt throws', async () => {
-  //   const { sut } = makeSut();
-  //   jest.spyOn(bcrypt, 'hash').mockReturnValueOnce(
-  //     new Promise((_, rejects) => {
-  //       return rejects(new Error());
-  //     }),
-  //   );
+  it('should throw if bcrypt throws', async () => {
+    const { sut } = makeSut();
+    jest.spyOn(bcrypt, 'hash').mockImplementationOnce(() => {
+      throw new Error();
+    });
 
-  //   const promise = sut.encrypt('any_value');
+    const promise = sut.encrypt('any_value');
 
-  //   await expect(promise).rejects.toThrow();
-  // });
+    await expect(promise).rejects.toThrow();
+  });
 });
