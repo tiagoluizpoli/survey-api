@@ -1,7 +1,7 @@
 import { WithId } from 'mongodb';
 import { AddAccountRepository } from '../../../data';
 import { AddAccountModel, AccountModel } from '../../../domain';
-import { MongoHelper } from './helpers/mongo.helper';
+import { MongoHelper, map } from './helpers';
 
 export class AccountMongoRepository implements AddAccountRepository {
   constructor() {}
@@ -12,7 +12,6 @@ export class AccountMongoRepository implements AddAccountRepository {
       _id: result.insertedId,
     });
 
-    const { _id, ...newAccount } = account as WithId<AccountModel>;
-    return Object.assign({}, newAccount, { id: _id as unknown as string });
+    return map(account);
   };
 }
