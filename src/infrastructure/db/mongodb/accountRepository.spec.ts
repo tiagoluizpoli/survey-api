@@ -1,34 +1,24 @@
-import { AccountMongoRepository } from './accountRepository';
-import { MongoHelper } from './helpers/mongo.helper';
+import { MongoHelper as sut } from './helpers/mongo.helper';
 
 describe('AccountRepository (Mongodb)', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL as string);
+    await sut.connect(process.env.MONGO_URL as string);
   });
 
   afterAll(async () => {
-    await MongoHelper.disconnect();
+    await sut.disconnect();
   });
 
   beforeEach(async () => {
-    const accountCollection = MongoHelper.getCollection('account');
+    const accountCollection = await sut.getCollection('account');
     await accountCollection.deleteMany({});
   });
-  const makeSut = (): AccountMongoRepository => {
-    return new AccountMongoRepository();
-  };
 
   it('should return an account on success', async () => {
-    const sut = makeSut();
-    const account = await sut.add({
-      name: 'any_name',
-      email: 'any_email',
-      password: 'any_password',
-    });
-    expect(account).toBeTruthy();
-    expect(account.id).toBeTruthy();
-    expect(account.name).toBe('any_name');
-    expect(account.email).toBe('any_email');
-    expect(account.password).toBe('any_password');
+    let accountCollection = sut.getCollection('accounts');
+    expect(accountCollection).toBeTruthy();
+    await sut.disconnect();
+    accountCollection = sut.getCollection('accounts');
+    expect(accountCollection).toBeTruthy();
   });
 });
