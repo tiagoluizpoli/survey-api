@@ -1,7 +1,7 @@
 import { WithId } from 'mongodb';
-import { AddAccountRepository } from '../../../data';
-import { AddAccountModel, AccountModel } from '../../../domain';
-import { MongoHelper } from './helpers';
+import { AddAccountRepository } from '../../../../data';
+import { AddAccountModel, AccountModel } from '../../../../domain';
+import { MongoHelper } from '../helpers';
 
 export class AccountMongoRepository implements AddAccountRepository {
   constructor() {}
