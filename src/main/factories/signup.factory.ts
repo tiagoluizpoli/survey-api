@@ -3,7 +3,7 @@ import { AccountMongoRepository, BcryptAdapter } from '../../infrastructure';
 
 import { SignUpController } from '../../presentation';
 import { EmailValidatorAdapter } from '../../utils';
-import { LogControllerDecorator } from '../decorators';
+// import { LogControllerDecorator } from '../decorators';
 
 export const makeSignUpController = () => {
   const salt = 12;
@@ -15,5 +15,5 @@ export const makeSignUpController = () => {
     emailValidatorAdapter,
     addAccount,
   );
-  return new LogControllerDecorator(signUpController);
+  return signUpController;
 };

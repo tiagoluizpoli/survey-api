@@ -1,2 +1,3 @@
 export * from './encrypter';
-export * from './addAccount.repository';
+export * from './addAccountRepository';
+export * from './logErrorRepository';

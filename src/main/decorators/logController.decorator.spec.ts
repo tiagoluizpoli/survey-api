@@ -1,10 +1,21 @@
-import { Controller, HttpRequest, HttpResponse } from '../../presentation';
+import { LogErrorRepository } from '../../data';
+import {
+  Controller,
+  HttpRequest,
+  HttpResponse,
+  serverError,
+} from '../../presentation';
 import { LogControllerDecorator } from './logController.decorator';
 
-interface makeSutResult {
-  sut: LogControllerDecorator;
-  controllerStub: Controller;
-}
+const makeLogErrorRepository = (): LogErrorRepository => {
+  class LogErrorStub implements LogErrorRepository {
+    log = async (stack: string): Promise<void> => {
+      stack;
+      return Promise.resolve(undefined);
+    };
+  }
+  return new LogErrorStub();
+};
 
 const makeController = (): Controller => {
   class ControllerStub implements Controller {
@@ -22,12 +33,20 @@ const makeController = (): Controller => {
   return new ControllerStub();
 };
 
+interface makeSutResult {
+  sut: LogControllerDecorator;
+  controllerStub: Controller;
+  logErrorStub: LogErrorRepository;
+}
+
 const makeSut = (): makeSutResult => {
   const controllerStub = makeController();
-  const sut = new LogControllerDecorator(controllerStub);
+  const logErrorStub = makeLogErrorRepository();
+  const sut = new LogControllerDecorator(controllerStub, logErrorStub);
   return {
     sut,
     controllerStub,
+    logErrorStub,
   };
 };
 
@@ -66,5 +85,26 @@ describe('LogController Decorator', () => {
         name: 'Tiago',
       },
     });
+  });
+
+  it('should call LogErrorRepository with correct error if controller returns a server error', async () => {
+    const { sut, controllerStub, logErrorStub } = makeSut();
+    const fakeError = new Error();
+    fakeError.stack = 'any_stack';
+    const error = serverError(fakeError);
+    const logSpy = jest.spyOn(logErrorStub, 'log');
+    jest
+      .spyOn(controllerStub, 'handle')
+      .mockReturnValueOnce(Promise.resolve(error));
+    const httpRequest: HttpRequest = {
+      body: {
+        email: 'any@email.com',
+        name: 'any_name',
+        password: 'any_password',
+        passwordConfirmation: 'any_password',
+      },
+    };
+    await sut.handle(httpRequest);
+    expect(logSpy).toHaveBeenCalledWith('any_stack');
   });
 });
