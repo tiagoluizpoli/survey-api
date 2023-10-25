@@ -25,14 +25,14 @@ describe('Login Controller', () => {
     const httpResponse: HttpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(badRequest(new MissingParamError('email')));
   });
-  // it('should return 400 if no password is provided', async () => {
-  //   const { sut } = makeSut();
-  //   const httpRequest: HttpRequest = {
-  //     body: {
-  //       email: 'any@email.com',
-  //     },
-  //   };
-  //   const httpResponse: HttpResponse = await sut.handle(httpRequest);
-  //   expect(httpResponse).toEqual(badRequest(new MissingParamError('password')));
-  // });
+  it('should return 400 if no password is provided', async () => {
+    const { sut } = makeSut();
+    const httpRequest: HttpRequest = {
+      body: {
+        email: 'any@email.com',
+      },
+    };
+    const httpResponse: HttpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('password')));
+  });
 });
