@@ -33,6 +33,8 @@ const makeSut = (): MakeSutResult => {
 
 interface MakeFakeDataResult {
   httpRequest: HttpRequest;
+  noEmailHttpRequest: HttpRequest;
+  noPasswordHttpRequest: HttpRequest;
   // fakeResponse: HttpResponse;
 }
 const makeFakeData = (): MakeFakeDataResult => {
@@ -43,30 +45,43 @@ const makeFakeData = (): MakeFakeDataResult => {
     },
   };
 
+  const noPasswordHttpRequest: HttpRequest = {
+    body: {
+      email: 'any@email.com',
+    },
+  };
+
+  const noEmailHttpRequest: HttpRequest = {
+    body: {
+      password: 'any_password',
+    },
+  };
+
   return {
     httpRequest,
+    noPasswordHttpRequest,
+    noEmailHttpRequest,
   };
 };
 
 describe('Login Controller', () => {
   it('should return 400 if no email is provided', async () => {
     const { sut } = makeSut();
-    const httpRequest: HttpRequest = {
-      body: {
-        password: 'any_password',
-      },
-    };
-    const httpResponse: HttpResponse = await sut.handle(httpRequest);
+
+    const { noEmailHttpRequest } = makeFakeData();
+
+    const httpResponse: HttpResponse = await sut.handle(noEmailHttpRequest);
+
     expect(httpResponse).toEqual(badRequest(new MissingParamError('email')));
   });
+
   it('should return 400 if no password is provided', async () => {
     const { sut } = makeSut();
-    const httpRequest: HttpRequest = {
-      body: {
-        email: 'any@email.com',
-      },
-    };
-    const httpResponse: HttpResponse = await sut.handle(httpRequest);
+
+    const { noPasswordHttpRequest } = makeFakeData();
+
+    const httpResponse: HttpResponse = await sut.handle(noPasswordHttpRequest);
+
     expect(httpResponse).toEqual(badRequest(new MissingParamError('password')));
   });
 
