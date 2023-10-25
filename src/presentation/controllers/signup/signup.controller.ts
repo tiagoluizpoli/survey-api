@@ -1,5 +1,6 @@
 import { AddAccount } from '../../../domain';
 import { InvalidParamError, MissingParamError } from '../../errors';
+import { Validation } from '../../helpers';
 
 import { badRequest, ok, serverError } from '../../helpers/httpHelper';
 import {
@@ -13,10 +14,12 @@ export class SignUpController implements Controller {
   constructor(
     private readonly emailValidator: EmailValidator,
     private readonly addAccount: AddAccount,
+    private readonly validation: Validation,
   ) {}
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handle = async (httpRequest: HttpRequest): Promise<HttpResponse> => {
     try {
+      this.validation.validate(httpRequest.body);
       const requiredFields = [
         'name',
         'email',

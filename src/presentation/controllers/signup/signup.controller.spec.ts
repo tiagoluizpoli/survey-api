@@ -3,7 +3,7 @@ import { InvalidParamError, MissingParamError } from '../../errors';
 
 import { SignUpController } from './signup.controller';
 import { EmailValidator, HttpRequest } from '../../protocols';
-import { badRequest, ok, serverError } from '../../helpers';
+import { Validation, badRequest, ok, serverError } from '../../helpers';
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -45,19 +45,36 @@ const makeAddAccount = (): AddAccount => {
   return new AddAccountStub();
 };
 
+const makeValidation = (): Validation => {
+  class ValidationStub implements Validation {
+    validate(input: unknown): Error | null {
+      input;
+      return null;
+    }
+  }
+  return new ValidationStub();
+};
+
 interface MakeSutResult {
   sut: SignUpController;
   emailValidatorStub: EmailValidator;
   addAccountStub: AddAccount;
+  validationStub: Validation;
 }
 const makeSut = (): MakeSutResult => {
   const emailValidatorStub = makeEmailValidator();
   const addAccountStub = makeAddAccount();
-  const sut = new SignUpController(emailValidatorStub, addAccountStub);
+  const validationStub = makeValidation();
+  const sut = new SignUpController(
+    emailValidatorStub,
+    addAccountStub,
+    validationStub,
+  );
   return {
     sut,
     emailValidatorStub,
     addAccountStub,
+    validationStub,
   };
 };
 
@@ -190,5 +207,15 @@ describe('SignUp Controller', () => {
 
     const httpResponse = await sut.handle(makeFakeRequest());
     expect(httpResponse).toEqual(ok(makeFakeAccount()));
+  });
+
+  it('Shoud call Validation with correct value', async () => {
+    const { sut, validationStub } = makeSut();
+    const validateSpy = jest.spyOn(validationStub, 'validate');
+
+    const httpRequest = makeFakeRequest();
+    await sut.handle(httpRequest);
+
+    expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
   });
 });
