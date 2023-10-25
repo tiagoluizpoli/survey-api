@@ -5,7 +5,7 @@ import {
   HttpResponse,
 } from '../../protocols';
 import { LoginController } from './loginController';
-import { badRequest, serverError } from '../../helpers';
+import { badRequest, serverError, unauthorized } from '../../helpers';
 import { InvalidParamError, MissingParamError } from '../../errors';
 import { Authentication } from '../../../domain';
 
@@ -163,5 +163,19 @@ describe('Login Controller', () => {
     await sut.handle(httpRequest);
 
     expect(sutSpy).toHaveBeenCalledWith(httpRequest);
+  });
+
+  it('should return 401 if invalid credentials provided', async () => {
+    const { sut, authenticationStub } = makeSut();
+
+    jest
+      .spyOn(authenticationStub, 'authenticate')
+      .mockReturnValueOnce(new Promise((resolve) => resolve(null)));
+
+    const { httpRequest } = makeFakeData();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(unauthorized());
   });
 });
