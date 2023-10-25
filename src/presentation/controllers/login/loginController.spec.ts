@@ -5,7 +5,7 @@ import {
   HttpResponse,
 } from '../../protocols';
 import { LoginController } from './loginController';
-import { badRequest, serverError, unauthorized } from '../../helpers';
+import { badRequest, ok, serverError, unauthorized } from '../../helpers';
 import { InvalidParamError, MissingParamError } from '../../errors';
 import { Authentication } from '../../../domain';
 
@@ -24,7 +24,7 @@ const makeAuthentication = (): Authentication => {
     authenticate = (email: string, password: string): Promise<string> => {
       email;
       password;
-      return Promise.resolve('token');
+      return Promise.resolve('any_token');
     };
   }
   return new AuthenticationStub();
@@ -153,18 +153,6 @@ describe('Login Controller', () => {
     );
   });
 
-  it('should call LoginController with valid data', async () => {
-    const { sut } = makeSut();
-
-    const sutSpy = jest.spyOn(sut, 'handle');
-
-    const { httpRequest } = makeFakeData();
-
-    await sut.handle(httpRequest);
-
-    expect(sutSpy).toHaveBeenCalledWith(httpRequest);
-  });
-
   it('should return 401 if invalid credentials provided', async () => {
     const { sut, authenticationStub } = makeSut();
 
@@ -191,5 +179,19 @@ describe('Login Controller', () => {
     const httpResponse = await sut.handle(httpRequest);
 
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it('should call LoginController with valid data', async () => {
+    const { sut } = makeSut();
+
+    const { httpRequest } = makeFakeData();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(
+      ok({
+        accessToken: 'any_token',
+      }),
+    );
   });
 });
