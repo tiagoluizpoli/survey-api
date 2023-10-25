@@ -1,15 +1,33 @@
-import { Controller, HttpRequest, HttpResponse } from '../../protocols';
+import {
+  Controller,
+  EmailValidator,
+  HttpRequest,
+  HttpResponse,
+} from '../../protocols';
 import { LoginController } from './loginController';
 import { badRequest } from '../../helpers';
 import { MissingParamError } from '../../errors';
 
+const makeEmailValidator = (): EmailValidator => {
+  class EmailValidatorStub implements EmailValidator {
+    isValid = (email: string): boolean => {
+      email;
+      return true;
+    };
+  }
+  return new EmailValidatorStub();
+};
+
 interface MakeSutResult {
   sut: Controller;
+  emailValidatorStub: EmailValidator;
 }
 const makeSut = (): MakeSutResult => {
-  const sut = new LoginController();
+  const emailValidatorStub = makeEmailValidator();
+  const sut = new LoginController(emailValidatorStub);
   return {
     sut,
+    emailValidatorStub,
   };
 };
 
@@ -51,11 +69,28 @@ describe('Login Controller', () => {
     const httpResponse: HttpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(badRequest(new MissingParamError('password')));
   });
-  it('should call Controller with valid data', async () => {
-    const { sut } = makeSut();
-    const sutSpy = jest.spyOn(sut, 'handle');
+
+  it('should call EmailValidator with a correct email', async () => {
+    const { sut, emailValidatorStub } = makeSut();
+
+    const isValidSpy = jest.spyOn(emailValidatorStub, 'isValid');
+
     const { httpRequest } = makeFakeData();
+
     await sut.handle(httpRequest);
+
+    expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
+  });
+
+  it('should call LoginController with valid data', async () => {
+    const { sut } = makeSut();
+
+    const sutSpy = jest.spyOn(sut, 'handle');
+
+    const { httpRequest } = makeFakeData();
+
+    await sut.handle(httpRequest);
+
     expect(sutSpy).toHaveBeenCalledWith(httpRequest);
   });
 });
