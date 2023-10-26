@@ -133,21 +133,21 @@ describe('SignUp Controller', () => {
   //   );
   // });
 
-  it('Shoud return 400 if passwordConfirmation fails', async () => {
-    const { sut } = makeSut();
-    const httpRequest = {
-      body: {
-        name: 'any_name',
-        email: 'any@email.com',
-        password: 'any_password',
-        passwordConfirmation: 'incorrect_password',
-      },
-    };
-    const httpResponse = await sut.handle(httpRequest);
-    expect(httpResponse).toEqual(
-      badRequest(new InvalidParamError('passwordConfirmation')),
-    );
-  });
+  // it('Shoud return 400 if passwordConfirmation fails', async () => {
+  //   const { sut } = makeSut();
+  //   const httpRequest = {
+  //     body: {
+  //       name: 'any_name',
+  //       email: 'any@email.com',
+  //       password: 'any_password',
+  //       passwordConfirmation: 'incorrect_password',
+  //     },
+  //   };
+  //   const httpResponse = await sut.handle(httpRequest);
+  //   expect(httpResponse).toEqual(
+  //     badRequest(new InvalidParamError('passwordConfirmation')),
+  //   );
+  // });
 
   it('Shoud return 400 if an invalid email is provided', async () => {
     const { sut, emailValidatorStub } = makeSut();

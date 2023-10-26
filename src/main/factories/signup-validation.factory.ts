@@ -2,6 +2,7 @@ import {
   ValidationComposite,
   Validation,
   RequiredFieldValidation,
+  CompareFildsValidation,
 } from '../../presentation';
 
 export const makeSignUpValidation = (): Validation => {
@@ -10,5 +11,8 @@ export const makeSignUpValidation = (): Validation => {
   for (const field of requiredFields) {
     validations.push(new RequiredFieldValidation(field));
   }
+  validations.push(
+    new CompareFildsValidation('password', 'passwordConfirmation'),
+  );
   return new ValidationComposite(validations);
 };

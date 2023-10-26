@@ -1,4 +1,5 @@
 import {
+  CompareFildsValidation,
   RequiredFieldValidation,
   Validation,
   ValidationComposite,
@@ -20,6 +21,9 @@ describe('SignupValidation Factory', () => {
     for (const field of requiredFields) {
       validations.push(new RequiredFieldValidation(field));
     }
+    validations.push(
+      new CompareFildsValidation('password', 'passwordConfirmation'),
+    );
     expect(ValidationComposite).toHaveBeenCalledWith(validations);
   });
 });
