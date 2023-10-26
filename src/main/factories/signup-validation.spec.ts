@@ -1,5 +1,7 @@
 import {
   CompareFildsValidation,
+  EmailValidation,
+  EmailValidator,
   RequiredFieldValidation,
   Validation,
   ValidationComposite,
@@ -7,7 +9,18 @@ import {
 import { makeSignUpValidation } from './signup-validation.factory';
 
 jest.mock('../../presentation');
-
+const makeEmailValidator = (): EmailValidator => {
+  class EmailValidatorStub implements EmailValidator {
+    isValid(email: string): boolean {
+      if (email) {
+        // eslint-disable-next-line no-console
+        console.log(email);
+      }
+      return true;
+    }
+  }
+  return new EmailValidatorStub();
+};
 describe('SignupValidation Factory', () => {
   it('should call ValidationComposite with all validations', () => {
     makeSignUpValidation();
@@ -24,6 +37,8 @@ describe('SignupValidation Factory', () => {
     validations.push(
       new CompareFildsValidation('password', 'passwordConfirmation'),
     );
+    const emailValidatorAdapter = makeEmailValidator();
+    validations.push(new EmailValidation('email', emailValidatorAdapter));
     expect(ValidationComposite).toHaveBeenCalledWith(validations);
   });
 });

@@ -6,19 +6,16 @@ import {
 } from '../../infrastructure';
 
 import { SignUpController } from '../../presentation';
-import { EmailValidatorAdapter } from '../../utils';
 import { LogControllerDecorator } from '../decorators';
 import { makeSignUpValidation } from './signup-validation.factory';
 
 export const makeSignUpController = () => {
   const salt = 12;
-  const emailValidatorAdapter = new EmailValidatorAdapter();
   const encrypter = new BcryptAdapter(salt);
   const addAccountRepository = new AccountMongoRepository();
   const addAccount = new DbAddAccount(encrypter, addAccountRepository);
   const validationComposite = makeSignUpValidation();
   const signUpController = new SignUpController(
-    emailValidatorAdapter,
     addAccount,
     validationComposite,
   );
