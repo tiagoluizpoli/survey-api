@@ -1,13 +1,12 @@
 import { Authentication } from '../../../domain';
 
+import { badRequest, ok, serverError, unauthorized } from '../../helpers';
 import {
+  Controller,
+  HttpRequest,
+  HttpResponse,
   Validation,
-  badRequest,
-  ok,
-  serverError,
-  unauthorized,
-} from '../../helpers';
-import { Controller, HttpRequest, HttpResponse } from '../../protocols';
+} from '../../protocols';
 
 export class LoginController implements Controller {
   constructor(

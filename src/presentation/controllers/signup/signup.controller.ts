@@ -1,5 +1,5 @@
 import { AddAccount } from '../../../domain';
-import { Validation } from '../../helpers';
+import { Validation } from '../../protocols';
 
 import { badRequest, ok, serverError } from '../../helpers/http/httpHelper';
 import { Controller, HttpRequest, HttpResponse } from '../../protocols';
