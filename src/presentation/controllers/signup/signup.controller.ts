@@ -1,7 +1,7 @@
 import { AddAccount } from '../../../domain';
 import { Validation } from '../../helpers';
 
-import { badRequest, ok, serverError } from '../../helpers/httpHelper';
+import { badRequest, ok, serverError } from '../../helpers/http/httpHelper';
 import { Controller, HttpRequest, HttpResponse } from '../../protocols';
 
 export class SignUpController implements Controller {
