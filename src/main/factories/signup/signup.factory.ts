@@ -1,12 +1,12 @@
-import { DbAddAccount } from '../../data';
+import { DbAddAccount } from '../../../data';
 import {
   AccountMongoRepository,
   BcryptAdapter,
   LogMongoRepository,
-} from '../../infrastructure';
+} from '../../../infrastructure';
 
-import { SignUpController } from '../../presentation';
-import { LogControllerDecorator } from '../decorators';
+import { SignUpController } from '../../../presentation';
+import { LogControllerDecorator } from '../../decorators';
 import { makeSignUpValidation } from './signup-validation.factory';
 
 export const makeSignUpController = () => {
