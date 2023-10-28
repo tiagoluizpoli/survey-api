@@ -22,10 +22,10 @@ export class LoginController implements Controller {
       }
       const { email, password } = httpRequest.body;
 
-      const accessToken = await this.authentication.authenticate(
+      const accessToken = await this.authentication.authenticate({
         email,
         password,
-      );
+      });
       if (!accessToken) {
         return unauthorized();
       }

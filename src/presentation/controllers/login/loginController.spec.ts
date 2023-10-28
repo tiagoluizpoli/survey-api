@@ -3,6 +3,7 @@ import { LoginController } from './loginController';
 import { badRequest, ok, serverError, unauthorized } from '../../helpers';
 import { MissingParamError } from '../../errors';
 import { Authentication } from '../../../domain';
+import { AuthenticationModel } from '../../../domain/usecases/authentication';
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     name: 'any_name',
@@ -13,9 +14,8 @@ const makeFakeRequest = (): HttpRequest => ({
 });
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    authenticate = (email: string, password: string): Promise<string> => {
-      email;
-      password;
+    authenticate = (authentication: AuthenticationModel): Promise<string> => {
+      authentication;
       return Promise.resolve('any_token');
     };
   }
@@ -91,10 +91,10 @@ describe('Login Controller', () => {
 
     await sut.handle(httpRequest);
 
-    expect(authenticateSpy).toHaveBeenCalledWith(
-      httpRequest.body.email,
-      httpRequest.body.password,
-    );
+    expect(authenticateSpy).toHaveBeenCalledWith({
+      email: httpRequest.body.email,
+      password: httpRequest.body.password,
+    });
   });
 
   it('should return 401 if invalid credentials provided', async () => {
