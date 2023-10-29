@@ -164,14 +164,24 @@ describe('DbAuthentication UseCase', () => {
   });
 
   it('should throw if TokenGenerator throws', async () => {
-    const { sut, hashComparerStub } = makeSut();
+    const { sut, tokenGeneratorStub } = makeSut();
 
-    jest.spyOn(hashComparerStub, 'compare').mockReturnValueOnce(Promise.reject(new Error()));
+    jest.spyOn(tokenGeneratorStub, 'generate').mockReturnValueOnce(Promise.reject(new Error()));
 
     const { fakeAuthentication } = makeFakeData();
 
     const promise = sut.authenticate(fakeAuthentication);
 
     expect(promise).rejects.toThrow();
+  });
+
+  it('should call TokenGenerator with correct id', async () => {
+    const { sut } = makeSut();
+
+    const { fakeAuthentication } = makeFakeData();
+
+    const accessToken = await sut.authenticate(fakeAuthentication);
+
+    expect(accessToken).toBe('any_token');
   });
 });
