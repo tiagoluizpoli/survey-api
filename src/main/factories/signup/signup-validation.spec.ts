@@ -25,18 +25,11 @@ describe('SignupValidation Factory', () => {
   it('should call ValidationComposite with all validations', () => {
     makeSignUpValidation();
     const validations: Validation[] = [];
-    const requiredFields = [
-      'name',
-      'email',
-      'password',
-      'passwordConfirmation',
-    ];
+    const requiredFields = ['name', 'email', 'password', 'passwordConfirmation'];
     for (const field of requiredFields) {
       validations.push(new RequiredFieldValidation(field));
     }
-    validations.push(
-      new CompareFildsValidation('password', 'passwordConfirmation'),
-    );
+    validations.push(new CompareFildsValidation('password', 'passwordConfirmation'));
     const emailValidatorAdapter = makeEmailValidator();
     validations.push(new EmailValidation('email', emailValidatorAdapter));
     expect(ValidationComposite).toHaveBeenCalledWith(validations);

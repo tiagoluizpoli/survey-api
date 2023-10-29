@@ -114,9 +114,7 @@ describe('Login Controller', () => {
   it('should return 500 if Authentication throws', async () => {
     const { sut, authenticationStub } = makeSut();
 
-    jest
-      .spyOn(authenticationStub, 'authenticate')
-      .mockReturnValueOnce(Promise.reject(new Error()));
+    jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(Promise.reject(new Error()));
 
     const { httpRequest } = makeFakeData();
 
@@ -151,12 +149,8 @@ describe('Login Controller', () => {
 
   it('Shoud return 400 if Validation returns an error', async () => {
     const { sut, validationStub } = makeSut();
-    jest
-      .spyOn(validationStub, 'validate')
-      .mockReturnValueOnce(new MissingParamError('any_field'));
+    jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'));
     const httpResponse = await sut.handle(makeFakeRequest());
-    expect(httpResponse).toEqual(
-      badRequest(new MissingParamError('any_field')),
-    );
+    expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')));
   });
 });
