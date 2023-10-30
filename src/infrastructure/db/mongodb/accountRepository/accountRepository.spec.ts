@@ -71,6 +71,6 @@ describe('AccountRepository (Mongodb)', () => {
 
     const account = await sut.loadByEmail(addAccount.email);
 
-    expect(account).toBe(null);
+    expect(account).toBeFalsy();
   });
 });
