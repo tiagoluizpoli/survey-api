@@ -5,7 +5,7 @@ import {
   CompareFildsValidation,
   EmailValidation,
 } from '../../../presentation';
-import { EmailValidatorAdapter } from '../../../utils';
+import { EmailValidatorAdapter } from '../../adapters';
 
 export const makeSignUpValidation = (): Validation => {
   const validations: Validation[] = [];

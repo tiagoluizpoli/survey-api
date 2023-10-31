@@ -4,7 +4,7 @@ import {
   RequiredFieldValidation,
   EmailValidation,
 } from '../../../presentation';
-import { EmailValidatorAdapter } from '../../../utils';
+import { EmailValidatorAdapter } from '../../adapters';
 
 export const makeLoginValidation = (): Validation => {
   const validations: Validation[] = [];
