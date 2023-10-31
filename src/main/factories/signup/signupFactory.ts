@@ -3,7 +3,7 @@ import { AccountMongoRepository, BcryptAdapter, LogMongoRepository } from '../..
 
 import { SignUpController } from '../../../presentation';
 import { LogControllerDecorator } from '../../decorators';
-import { makeSignUpValidation } from './signup-validation.factory';
+import { makeSignUpValidation } from './signupValidationFactory';
 
 export const makeSignUpController = () => {
   const salt = 12;

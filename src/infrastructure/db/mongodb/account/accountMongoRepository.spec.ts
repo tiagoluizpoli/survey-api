@@ -1,7 +1,7 @@
 import { Collection } from 'mongodb';
 import { AccountModel, AddAccountModel } from '../../../../domain';
 import { MongoHelper } from '../helpers/mongo.helper';
-import { AccountMongoRepository } from './accountRepository';
+import { AccountMongoRepository } from './accountMongoRepository';
 
 interface MakeFakeDataResult {
   addAccount: AddAccountModel;

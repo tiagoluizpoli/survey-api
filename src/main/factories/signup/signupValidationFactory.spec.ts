@@ -6,7 +6,7 @@ import {
   Validation,
   ValidationComposite,
 } from '../../../presentation';
-import { makeSignUpValidation } from './signup-validation.factory';
+import { makeSignUpValidation } from './signupValidationFactory';
 
 jest.mock('../../../presentation');
 const makeEmailValidator = (): EmailValidator => {
