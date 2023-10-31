@@ -1,12 +1,6 @@
 import { LogErrorRepository } from '../../data';
 import { AccountModel } from '../../domain';
-import {
-  Controller,
-  HttpRequest,
-  HttpResponse,
-  ok,
-  serverError,
-} from '../../presentation';
+import { Controller, HttpRequest, HttpResponse, ok, serverError } from '../../presentation';
 import { LogControllerDecorator } from './logController.decorator';
 
 const makeFakeRequest = (): HttpRequest => ({

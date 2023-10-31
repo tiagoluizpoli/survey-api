@@ -1,1 +1,2 @@
-export * from './bcrypt.adapter';
+export * from './bcryptAdapter';
+export * from './jwtAdapter';
