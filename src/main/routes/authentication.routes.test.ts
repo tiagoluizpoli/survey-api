@@ -1,7 +1,7 @@
 import { MongoHelper } from '../../infrastructure';
 import app from '../config/app';
 import request from 'supertest';
-describe('Signup Routes', () => {
+describe('Authentication Routes', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string);
   });
@@ -14,15 +14,18 @@ describe('Signup Routes', () => {
     const accountCollection = await MongoHelper.getCollection('account');
     await accountCollection.deleteMany({});
   });
-  it('should return an account on success', async () => {
-    await request(app)
-      .post('/api/signup')
-      .send({
-        name: 'Tiago',
-        email: 'tiago.shablaw@gmail.com',
-        password: '123',
-        passwordConfirmation: '123',
-      })
-      .expect(200);
+
+  describe('POST /signup', () => {
+    it('should return 200 on signup', async () => {
+      await request(app)
+        .post('/api/signup')
+        .send({
+          name: 'Tiago',
+          email: 'tiago.shablaw@gmail.com',
+          password: '123',
+          passwordConfirmation: '123',
+        })
+        .expect(200);
+    });
   });
 });
