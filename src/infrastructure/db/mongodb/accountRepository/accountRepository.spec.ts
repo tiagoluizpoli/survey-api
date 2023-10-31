@@ -1,5 +1,5 @@
 import { Collection } from 'mongodb';
-import { AddAccountModel } from '../../../../domain';
+import { AccountModel, AddAccountModel } from '../../../../domain';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { AccountMongoRepository } from './accountRepository';
 
@@ -72,5 +72,28 @@ describe('AccountRepository (Mongodb)', () => {
     const account = await sut.loadByEmail(addAccount.email);
 
     expect(account).toBeFalsy();
+  });
+
+  it('should update the account accessToken on updateAccessTokenSuccess', async () => {
+    const { sut } = makeSut();
+    const { addAccount } = makeFakeData();
+
+    // insert one account to be updated afterwards.
+    const res = await accountCollection.insertOne({ ...addAccount, id: 'any_id' });
+
+    // fetch the account updated and test if accessToken is undefined (falsy)
+    const accountBeforeUpdate = await accountCollection.findOne<AccountModel>({
+      _id: res.insertedId,
+    });
+    expect(accountBeforeUpdate?.accessToken).toBeFalsy();
+
+    // update account accessToken and test if accesstoken was successfuly updated
+    await sut.updateAccessToken(res.insertedId.toString(), 'any_token');
+    const account = await accountCollection.findOne<AccountModel>({
+      _id: res.insertedId,
+    });
+
+    expect(account).toBeTruthy();
+    expect(account?.accessToken).toBe('any_token');
   });
 });
