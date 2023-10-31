@@ -50,5 +50,15 @@ describe('Authentication Routes', () => {
         })
         .expect(200);
     });
+
+    it('should return 401 on login with incorrect credentials', async () => {
+      await request(app)
+        .post('/api/login')
+        .send({
+          email: 'tiago.shablaw@gmail.com',
+          password: '123',
+        })
+        .expect(401);
+    });
   });
 });
