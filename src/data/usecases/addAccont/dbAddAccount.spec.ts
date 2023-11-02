@@ -109,28 +109,6 @@ describe('DbAddAccount Usecase', () => {
     await accountCollection.deleteMany({});
   });
 
-  it('should call hasher with correct password', async () => {
-    const { sut, hasherStub } = makeSut();
-    const hashSpy = jest.spyOn(hasherStub, 'hash');
-
-    await sut.add(makeFakeAccountData());
-
-    expect(hashSpy).toHaveBeenCalledWith('valid_password');
-  });
-
-  it('should throw if hasher throws', async () => {
-    const { sut, hasherStub } = makeSut();
-    jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(
-      new Promise((_, rejects) => {
-        return rejects(new Error());
-      }),
-    );
-
-    const promise = sut.add(makeFakeAccountData());
-
-    await expect(promise).rejects.toThrow();
-  });
-
   it('should call LoadAccountByEmailRepository with correct email', async () => {
     const { sut, loadAccountByEmailRepositoryStub } = makeSut();
 
@@ -151,6 +129,42 @@ describe('DbAddAccount Usecase', () => {
     const promise = sut.add(addFakeAccount);
 
     await expect(promise).rejects.toThrow(new AccountAlreadyExistsError());
+  });
+
+  it('should throw if LoadAccountByEmailRepository throws', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+      .mockReturnValueOnce(Promise.reject(new Error()));
+
+    const { addFakeAccount } = makeFakeData();
+
+    const promise = sut.add(addFakeAccount);
+
+    await expect(promise).rejects.toThrow();
+  });
+
+  it('should call hasher with correct password', async () => {
+    const { sut, hasherStub } = makeSut();
+    const hashSpy = jest.spyOn(hasherStub, 'hash');
+
+    await sut.add(makeFakeAccountData());
+
+    expect(hashSpy).toHaveBeenCalledWith('valid_password');
+  });
+
+  it('should throw if hasher throws', async () => {
+    const { sut, hasherStub } = makeSut();
+    jest.spyOn(hasherStub, 'hash').mockReturnValueOnce(
+      new Promise((_, rejects) => {
+        return rejects(new Error());
+      }),
+    );
+
+    const promise = sut.add(makeFakeAccountData());
+
+    await expect(promise).rejects.toThrow();
   });
 
   it('should call AddAccountRepository with correct values', async () => {
