@@ -7,7 +7,7 @@ services:
     image: mongo
     restart: always
     volumes:
-      - ./data:/data/db
+      - ./docker-data/mongo:/data/db
       - ./init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js # Mount the initialization script
     ports:
       - 27017:27017
@@ -32,12 +32,14 @@ services:
     container_name: clean-node-api
     build: .
     image: clean-node-api
-    restart: aways
+    restart: always
     command: yarn start
     volumes:
       - ./dist:/usr/src/clean-node-api/dist
     ports:
       - 5050:5050
+    environment:
+      - MONGO_URL=mongodb://root:example@mongo:27017/clean-node-api
     links:
       - mongo
 
