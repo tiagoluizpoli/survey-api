@@ -3,6 +3,7 @@ import { Validation } from '../../protocols';
 
 import { badRequest, ok, serverError } from '../../helpers/http/httpHelper';
 import { Controller, HttpRequest, HttpResponse } from '../../protocols';
+import { AccountAlreadyExistsError } from '../../errors';
 
 export class SignUpController implements Controller {
   constructor(
@@ -25,6 +26,9 @@ export class SignUpController implements Controller {
       });
       return ok(account);
     } catch (error) {
+      if (error instanceof AccountAlreadyExistsError) {
+        return badRequest(error);
+      }
       return serverError(error as Error);
     }
   };
