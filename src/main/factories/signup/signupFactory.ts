@@ -8,8 +8,8 @@ import { makeSignUpValidation } from './signupValidationFactory';
 export const makeSignUpController = () => {
   const salt = 12;
   const hasher = new BcryptAdapter(salt);
-  const addAccountRepository = new AccountMongoRepository();
-  const addAccount = new DbAddAccount(hasher, addAccountRepository);
+  const accountMongoRepository = new AccountMongoRepository();
+  const addAccount = new DbAddAccount(hasher, accountMongoRepository, accountMongoRepository);
   const validationComposite = makeSignUpValidation();
   const signUpController = new SignUpController(addAccount, validationComposite);
   const logMongoRepository = new LogMongoRepository();
