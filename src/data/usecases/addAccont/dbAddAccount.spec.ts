@@ -1,4 +1,7 @@
+import { Collection } from 'mongodb';
 import { AccountModel, AddAccountModel } from '../../../domain';
+import { MongoHelper } from '../../../infrastructure';
+import { AccountAlreadyExistsError } from '../../../presentation';
 import { AddAccountRepository, LoadAccountByEmailRepository } from '../../protocols';
 import { Hasher } from '../../protocols/criptography/hasher';
 import { DbAddAccount } from './dbAddAccount';
@@ -62,8 +65,8 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
     loadByEmail = async (email: string): Promise<AccountModel | null> => {
       email;
-      const { fakeAccount } = makeFakeData();
-      return Promise.resolve(fakeAccount);
+
+      return Promise.resolve(null);
     };
   }
 
@@ -91,8 +94,21 @@ const makeSut = (): MakeSutResult => {
 
   return { sut, hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub };
 };
-
+let accountCollection: Collection;
 describe('DbAddAccount Usecase', () => {
+  beforeAll(async () => {
+    await MongoHelper.connect(process.env.MONGO_URL as string);
+  });
+
+  afterAll(async () => {
+    await MongoHelper.disconnect();
+  });
+
+  beforeEach(async () => {
+    accountCollection = await MongoHelper.getCollection('accounts');
+    await accountCollection.deleteMany({});
+  });
+
   it('should call hasher with correct password', async () => {
     const { sut, hasherStub } = makeSut();
     const hashSpy = jest.spyOn(hasherStub, 'hash');
@@ -123,6 +139,18 @@ describe('DbAddAccount Usecase', () => {
     await sut.add(addFakeAccount);
 
     expect(accountSpy).toBeCalledWith(addFakeAccount.email);
+  });
+
+  it('should throw if LoadAccountByEmailRepository return an account', async () => {
+    const { sut, loadAccountByEmailRepositoryStub } = makeSut();
+
+    const { addFakeAccount, fakeAccount } = makeFakeData();
+    jest
+      .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+      .mockReturnValueOnce(Promise.resolve(fakeAccount));
+    const promise = sut.add(addFakeAccount);
+
+    await expect(promise).rejects.toThrow(new AccountAlreadyExistsError());
   });
 
   it('should call AddAccountRepository with correct values', async () => {
