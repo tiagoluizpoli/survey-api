@@ -9,6 +9,8 @@
     "dev": "sucrase-node src/main/server.ts",
     "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc",
+    "docker:up": "yarn build && docker compose up -d",
+    "docker:down": "docker compose down",
     "husky:prepare": "husky install",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
