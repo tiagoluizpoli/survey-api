@@ -6,6 +6,7 @@
   "author": "Tiago Poli <tiagoluizpoli@gmail.com>",
   "license": "MIT",
   "scripts": {
+    "start": "node dist/main/server.js",
     "dev": "sucrase-node src/main/server.ts",
     "husky:prepare": "husky install",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
