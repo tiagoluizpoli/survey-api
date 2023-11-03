@@ -6,8 +6,7 @@
   "author": "Tiago Poli <tiagoluizpoli@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "sucrase-node src/main/server.ts",
-    "dev:v2": "tsx watch src/main/server.ts",
+    "dev": "tsx watch src/main/server.ts",
     "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc",
     "docker:up": "yarn build && docker compose up -d",
