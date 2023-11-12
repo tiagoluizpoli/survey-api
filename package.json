@@ -6,9 +6,13 @@
   "author": "Tiago Poli <tiagoluizpoli@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "sucrase-node src/main/server.ts",
     "start": "node dist/main/server.js",
+    "debug": "node --inspect=0.0.0.0:9222 --nolazy dist/main/server.js",
+    "dev": "tsx watch src/main/server.ts",
     "build": "rimraf dist && tsc",
+    "docker:up": "yarn build && docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:restart": "yarn docker:down && yarn docker:up",
     "husky:prepare": "husky install",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
@@ -28,6 +32,7 @@
     "@types/validator": "^13.11.3",
     "@typescript-eslint/eslint-plugin": "^6.7.5",
     "@typescript-eslint/parser": "^6.7.5",
+    "dotenv": "^16.3.1",
     "eslint": "^8.51.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.25.2",
@@ -41,10 +46,10 @@
     "lint-staged": "^14.0.1",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.5",
-    "sucrase": "^3.34.0",
     "supertest": "^6.3.3",
     "ts-jest": "^29.1.1",
     "ts-node": "^10.9.1",
+    "tsx": "^3.14.0",
     "typescript": "*"
   },
   "dependencies": {
@@ -53,6 +58,10 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.9.0",
     "npm-check": "^6.0.1",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "dotenv": "^16.3.1"
+  },
+  "engines": {
+    "node": "18.x"
   }
 }
