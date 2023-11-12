@@ -6,11 +6,13 @@
   "author": "Tiago Poli <tiagoluizpoli@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "tsx watch src/main/server.ts",
     "start": "node dist/main/server.js",
+    "debug": "node --inspect=0.0.0.0:9222 --nolazy dist/main/server.js",
+    "dev": "tsx watch src/main/server.ts",
     "build": "rimraf dist && tsc",
     "docker:up": "yarn build && docker compose up -d",
     "docker:down": "docker compose down",
+    "docker:restart": "yarn docker:down && yarn docker:up",
     "husky:prepare": "husky install",
     "test": "jest --passWithNoTests --silent --noStackTrace --runInBand",
     "test:verbose": "jest --passWithNoTests --runInBand",
@@ -56,7 +58,8 @@
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^5.9.0",
     "npm-check": "^6.0.1",
-    "validator": "^13.11.0"
+    "validator": "^13.11.0",
+    "dotenv": "^16.3.1"
   },
   "engines": {
     "node": "18.x"
