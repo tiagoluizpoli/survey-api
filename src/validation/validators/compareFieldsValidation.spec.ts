@@ -1,4 +1,4 @@
-import { InvalidParamError } from '../../errors';
+import { InvalidParamError } from '../../presentation';
 import { CompareFildsValidation } from './compareFieldsValidation';
 
 interface MakeSutResult {
