@@ -1,4 +1,4 @@
-import { AddAccount } from '../../../domain';
+import { AddAccount, Authentication } from '../../../domain';
 import { Validation } from '../../protocols';
 
 import { badRequest, ok, serverError } from '../../helpers/http/httpHelper';
@@ -9,6 +9,7 @@ export class SignUpController implements Controller {
   constructor(
     private readonly addAccount: AddAccount,
     private readonly validation: Validation,
+    private readonly authentication: Authentication,
   ) {}
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handle = async (httpRequest: HttpRequest): Promise<HttpResponse> => {
@@ -21,6 +22,10 @@ export class SignUpController implements Controller {
       const { name, email, password } = httpRequest.body;
       const account = await this.addAccount.add({
         name,
+        email,
+        password,
+      });
+      await this.authentication.authenticate({
         email,
         password,
       });
