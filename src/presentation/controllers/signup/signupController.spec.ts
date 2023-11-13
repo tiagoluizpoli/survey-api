@@ -11,27 +11,39 @@ import { SignUpController } from './signupController';
 import { HttpRequest, Validation } from '../../protocols';
 import { badRequest, ok, serverError } from '../../helpers';
 
-const makeFakeRequest = (): HttpRequest => ({
-  body: {
-    name: 'any_name',
-    email: 'any@email.com',
-    password: 'any_password',
-    passwordConfirmation: 'any_password',
-  },
-});
+interface makeFakeDataResult {
+  httpRequest: HttpRequest;
+  fakeAccount: AccountModel;
+}
 
-const makeFakeAccount = (): AccountModel => ({
-  id: 'valid_id',
-  name: 'valid_name',
-  email: 'valid_email',
-  password: 'valid_password',
-});
+const makeFakeSignupData = (): makeFakeDataResult => {
+  const fakeHttpRequest: HttpRequest = {
+    body: {
+      name: 'any_name',
+      email: 'any@email.com',
+      password: 'any_password',
+      passwordConfirmation: 'any_password',
+    },
+  };
+
+  const fakeAccountModel = {
+    id: 'valid_id',
+    name: 'valid_name',
+    email: 'valid_email',
+    password: 'valid_password',
+  };
+
+  return {
+    httpRequest: fakeHttpRequest,
+    fakeAccount: fakeAccountModel,
+  };
+};
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add(account: AddAccountModel): Promise<AccountModel> {
       account;
-      const fakeAccount: AccountModel = makeFakeAccount();
+      const { fakeAccount } = makeFakeSignupData();
       return await Promise.resolve(fakeAccount);
     }
   }
@@ -82,8 +94,9 @@ describe('SignUp Controller', () => {
   it('Shoud call AddAccount with correct values', async () => {
     const { sut, addAccountStub } = makeSut();
     const addSpy = jest.spyOn(addAccountStub, 'add');
+    const { httpRequest } = makeFakeSignupData();
 
-    await sut.handle(makeFakeRequest());
+    await sut.handle(httpRequest);
 
     expect(addSpy).toHaveBeenCalledWith({
       name: 'any_name',
@@ -97,8 +110,9 @@ describe('SignUp Controller', () => {
     jest.spyOn(addAccountStub, 'add').mockImplementationOnce(() => {
       return Promise.reject(new Error());
     });
-    makeSut;
-    const httpResponse = await sut.handle(makeFakeRequest());
+    const { httpRequest } = makeFakeSignupData();
+
+    const httpResponse = await sut.handle(httpRequest);
     const fakeError = new Error();
     fakeError.stack = 'any_stack';
     expect(httpResponse).toEqual(serverError(fakeError));
@@ -106,16 +120,17 @@ describe('SignUp Controller', () => {
 
   it('Shoud return 200 if valid data is provided', async () => {
     const { sut } = makeSut();
+    const { httpRequest, fakeAccount } = makeFakeSignupData();
 
-    const httpResponse = await sut.handle(makeFakeRequest());
-    expect(httpResponse).toEqual(ok(makeFakeAccount()));
+    const httpResponse = await sut.handle(httpRequest);
+    expect(httpResponse).toEqual(ok(fakeAccount));
   });
 
   it('Shoud call Validation with correct value', async () => {
     const { sut, validationStub } = makeSut();
     const validateSpy = jest.spyOn(validationStub, 'validate');
 
-    const httpRequest = makeFakeRequest();
+    const { httpRequest } = makeFakeSignupData();
     await sut.handle(httpRequest);
 
     expect(validateSpy).toHaveBeenCalledWith(httpRequest.body);
@@ -124,7 +139,10 @@ describe('SignUp Controller', () => {
   it('Shoud return 400 if Validation returns an error', async () => {
     const { sut, validationStub } = makeSut();
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new MissingParamError('any_field'));
-    const httpResponse = await sut.handle(makeFakeRequest());
+
+    const { httpRequest } = makeFakeSignupData();
+
+    const httpResponse = await sut.handle(httpRequest);
     expect(httpResponse).toEqual(badRequest(new MissingParamError('any_field')));
   });
 
@@ -133,12 +151,7 @@ describe('SignUp Controller', () => {
 
     const authenticateSpy = jest.spyOn(authenticationStub, 'authenticate');
 
-    const httpRequest = {
-      body: {
-        email: 'any@email.com',
-        password: 'any_password',
-      },
-    };
+    const { httpRequest } = makeFakeSignupData();
 
     await sut.handle(httpRequest);
 
