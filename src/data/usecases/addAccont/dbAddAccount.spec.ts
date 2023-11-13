@@ -1,4 +1,3 @@
-import { Collection } from 'mongodb';
 import { AccountModel, AddAccountModel, AuthenticationModel } from '../../../domain';
 import { MongoHelper } from '../../../infrastructure';
 
@@ -90,7 +89,8 @@ const makeSut = (): MakeSutResult => {
 
   return { sut, hasherStub, addAccountRepositoryStub, loadAccountByEmailRepositoryStub };
 };
-let accountCollection: Collection;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+let accountCollection: any;
 describe('DbAddAccount Usecase', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string);
