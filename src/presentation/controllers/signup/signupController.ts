@@ -20,16 +20,16 @@ export class SignUpController implements Controller {
       }
 
       const { name, email, password } = httpRequest.body;
-      const account = await this.addAccount.add({
+      await this.addAccount.add({
         name,
         email,
         password,
       });
-      await this.authentication.authenticate({
+      const accessToken = await this.authentication.authenticate({
         email,
         password,
       });
-      return ok(account);
+      return ok({ accessToken });
     } catch (error) {
       if (error instanceof AccountAlreadyExistsError) {
         return badRequest(error);
