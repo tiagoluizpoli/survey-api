@@ -11,6 +11,7 @@ export class DbAddAccount implements AddAccountProtocol {
 
   add = async (accountData: AddAccountModel): Promise<AccountModel | null> => {
     const account = await this.loadAccountByEmailRepository.loadByEmail(accountData.email);
+
     if (account) {
       return null;
     }
