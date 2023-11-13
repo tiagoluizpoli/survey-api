@@ -5,11 +5,11 @@ import {
   Authentication,
   AuthenticationModel,
 } from '../../../domain';
-import { MissingParamError } from '../../errors';
+import { AccountAlreadyExistsError, MissingParamError } from '../../errors';
 
 import { SignUpController } from './signupController';
 import { HttpRequest, Validation } from '../../protocols';
-import { badRequest, ok, serverError } from '../../helpers';
+import { badRequest, forbidden, ok, serverError } from '../../helpers';
 
 interface makeFakeDataResult {
   httpRequest: HttpRequest;
@@ -118,8 +118,20 @@ describe('SignUp Controller', () => {
     expect(httpResponse).toEqual(serverError(fakeError));
   });
 
+  it('Shoud return 403 AddAccount returns null', async () => {
+    const { sut, addAccountStub } = makeSut();
+
+    jest.spyOn(addAccountStub, 'add').mockReturnValueOnce(Promise.resolve(null));
+    const { httpRequest } = makeFakeSignupData();
+
+    const httpResponse = await sut.handle(httpRequest);
+
+    expect(httpResponse).toEqual(forbidden(new AccountAlreadyExistsError()));
+  });
+
   it('Shoud return 200 if valid data is provided', async () => {
     const { sut } = makeSut();
+
     const { httpRequest } = makeFakeSignupData();
 
     const httpResponse = await sut.handle(httpRequest);
