@@ -3,7 +3,7 @@ import { Authentication } from '../../../../domain';
 import { badRequest, ok, serverError, unauthorized } from '../../../helpers';
 import { Controller, HttpRequest, HttpResponse, Validation } from '../../../protocols';
 
-export class LoginController implements Controller {
+export class SignInController implements Controller {
   constructor(
     private readonly authentication: Authentication,
     private readonly validation: Validation,

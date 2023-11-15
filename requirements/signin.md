@@ -1,8 +1,8 @@
-# Login
+# Autenticação
 
 > ## Caso de sucesso
 
-1. ✅ Recebe uma requisição do tipo **POST** na rota **/api/login**
+1. ✅ Recebe uma requisição do tipo **POST** na rota **/api/signin**
 2. ✅ Valida dados obrigatórios **email** e **password**
 3. ✅ Valida que o campo **email** é um e-mail válido
 4. ✅ **Busca** o usuário com o email e senha fornecidos

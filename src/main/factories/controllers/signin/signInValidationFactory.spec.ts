@@ -1,5 +1,5 @@
 import { Validation } from '../../../../presentation';
-import { makeLoginValidation } from './loginValidationFactory';
+import { makeSignInValidation } from './signInValidationFactory';
 import {
   EmailValidation,
   EmailValidator,
@@ -21,9 +21,9 @@ const makeEmailValidator = (): EmailValidator => {
   }
   return new EmailValidatorStub();
 };
-describe('LoginValidation Factory', () => {
+describe('SignInValidation Factory', () => {
   it('should call ValidationComposite with all validations', () => {
-    makeLoginValidation();
+    makeSignInValidation();
     const validations: Validation[] = [];
 
     const requiredFields = ['email', 'password'];

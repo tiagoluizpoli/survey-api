@@ -6,7 +6,7 @@ import {
   ValidationComposite,
 } from '../../../../validation';
 
-export const makeLoginValidation = (): Validation => {
+export const makeSignInValidation = (): Validation => {
   const validations: Validation[] = [];
   const requiredFields = ['email', 'password'];
   for (const field of requiredFields) {

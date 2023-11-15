@@ -33,7 +33,7 @@ describe('Authentication Routes', () => {
     });
   });
 
-  describe('POST /login', () => {
+  describe('POST /signin', () => {
     it('should return 200 on login', async () => {
       const password = await hash('123', 12);
 
@@ -43,7 +43,7 @@ describe('Authentication Routes', () => {
         password,
       });
       await request(app)
-        .post('/api/login')
+        .post('/api/signin')
         .send({
           email: 'tiago.shablaw@gmail.com',
           password: '123',
@@ -53,7 +53,7 @@ describe('Authentication Routes', () => {
 
     it('should return 401 on login with incorrect credentials', async () => {
       await request(app)
-        .post('/api/login')
+        .post('/api/signin')
         .send({
           email: 'tiago.shablaw@gmail.com',
           password: '123',

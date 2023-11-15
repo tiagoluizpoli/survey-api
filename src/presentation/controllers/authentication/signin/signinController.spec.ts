@@ -1,6 +1,6 @@
 import { Authentication, AuthenticationModel } from '../../../../domain';
 import { Validation, Controller, HttpRequest } from '../../../protocols';
-import { LoginController } from './loginController';
+import { SignInController } from './signinController';
 import { unauthorized, serverError, badRequest, ok } from '../../../helpers';
 import { MissingParamError } from '../../../errors';
 
@@ -40,7 +40,7 @@ interface MakeSutResult {
 const makeSut = (): MakeSutResult => {
   const authenticationStub = makeAuthentication();
   const validationStub = makeValidation();
-  const sut = new LoginController(authenticationStub, validationStub);
+  const sut = new SignInController(authenticationStub, validationStub);
   return {
     sut,
     validationStub,
@@ -81,7 +81,7 @@ const makeFakeData = (): MakeFakeDataResult => {
   };
 };
 
-describe('Login Controller', () => {
+describe('SignIn Controller', () => {
   it('should call Authentication with a correct values', async () => {
     const { sut, authenticationStub } = makeSut();
 
@@ -123,7 +123,7 @@ describe('Login Controller', () => {
     expect(httpResponse).toEqual(serverError(new Error()));
   });
 
-  it('should call LoginController with valid data', async () => {
+  it('should call SignInController with valid data', async () => {
     const { sut } = makeSut();
 
     const { httpRequest } = makeFakeData();
