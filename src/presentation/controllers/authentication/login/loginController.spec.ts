@@ -1,9 +1,9 @@
-import { Controller, HttpRequest, Validation } from '../../protocols';
+import { Authentication, AuthenticationModel } from '../../../../domain';
+import { Validation, Controller, HttpRequest } from '../../../protocols';
 import { LoginController } from './loginController';
-import { badRequest, ok, serverError, unauthorized } from '../../helpers';
-import { MissingParamError } from '../../errors';
-import { Authentication } from '../../../domain';
-import { AuthenticationModel } from '../../../domain/usecases/authentication';
+import { unauthorized, serverError, badRequest, ok } from '../../../helpers';
+import { MissingParamError } from '../../../errors';
+
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     name: 'any_name',

@@ -1,9 +1,9 @@
-import { AddAccount, Authentication } from '../../../domain';
-import { Validation } from '../../protocols';
+import { AddAccount, Authentication } from '../../../../domain';
+import { Validation } from '../../../protocols';
 
-import { badRequest, forbidden, ok, serverError } from '../../helpers/http/httpHelper';
-import { Controller, HttpRequest, HttpResponse } from '../../protocols';
-import { AccountAlreadyExistsError } from '../../errors';
+import { badRequest, forbidden, ok, serverError } from '../../../helpers/http/httpHelper';
+import { Controller, HttpRequest, HttpResponse } from '../../../protocols';
+import { AccountAlreadyExistsError } from '../../../errors';
 
 export class SignUpController implements Controller {
   constructor(

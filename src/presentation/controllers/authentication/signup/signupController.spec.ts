@@ -4,12 +4,12 @@ import {
   AccountModel,
   Authentication,
   AuthenticationModel,
-} from '../../../domain';
-import { AccountAlreadyExistsError, MissingParamError } from '../../errors';
+} from '../../../../domain';
+import { AccountAlreadyExistsError, MissingParamError } from '../../../errors';
 
 import { SignUpController } from './signupController';
-import { HttpRequest, Validation } from '../../protocols';
-import { badRequest, forbidden, ok, serverError } from '../../helpers';
+import { HttpRequest, Validation } from '../../../protocols';
+import { badRequest, forbidden, ok, serverError } from '../../../helpers';
 
 interface makeFakeDataResult {
   httpRequest: HttpRequest;
