@@ -1,3 +1,4 @@
+import { badRequest } from '../../../helpers';
 import { Controller, HttpRequest, HttpResponse, Validation } from '../../../protocols';
 
 export class AddSurveyController implements Controller {
@@ -10,7 +11,10 @@ export class AddSurveyController implements Controller {
       body: httpRequest.body,
     };
 
-    this.validation.validate(httpRequest.body);
+    const error = this.validation.validate(httpRequest.body);
+    if (error) {
+      return Promise.resolve(badRequest(error));
+    }
     return Promise.resolve(httpResponse);
   };
 }
