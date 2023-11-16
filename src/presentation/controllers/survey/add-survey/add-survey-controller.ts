@@ -1,5 +1,5 @@
 import { AddSurvey } from '../../../../domain';
-import { badRequest, serverError } from '../../../helpers';
+import { badRequest, noContent, serverError } from '../../../helpers';
 import { Controller, HttpRequest, HttpResponse, Validation } from '../../../protocols';
 
 export class AddSurveyController implements Controller {
@@ -21,12 +21,7 @@ export class AddSurveyController implements Controller {
         answers,
       });
 
-      const httpResponse: HttpResponse = {
-        statusCode: 200,
-        body: httpRequest.body,
-      };
-
-      return httpResponse;
+      return noContent();
     } catch (error) {
       return serverError(error as Error);
     }
