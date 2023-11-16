@@ -1,6 +1,6 @@
 import { Controller, HttpRequest, Validation } from '../../../protocols';
 import { AddSurveyController } from './add-survey-controller';
-import { badRequest, serverError } from '../../../helpers';
+import { badRequest, noContent, serverError } from '../../../helpers';
 import { AddSurvey, AddSurveyModel } from '../../../../domain';
 
 interface MakeFakeDataResult {
@@ -110,5 +110,17 @@ describe('AddSurvey Controller', () => {
 
     //Assert
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it('shoud return 204 on success', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    const { httpRequest } = makeFakeData();
+
+    // Act
+    const httpResponse = await sut.handle(httpRequest);
+
+    // Assert
+    expect(httpResponse).toEqual(noContent());
   });
 });
