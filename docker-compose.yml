@@ -15,6 +15,8 @@ services:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
     command: --auth # Enable authentication
+    networks:
+      - dev
 
   mongo-express:
     container_name: mongo-express  
@@ -28,21 +30,10 @@ services:
       ME_CONFIG_BASICAUTH_USERNAME: admin
       ME_CONFIG_BASICAUTH_PASSWORD: 123@Mudar
       ME_CONFIG_MONGODB_URL: mongodb://root:example@mongo:27017/
-  
-  api:
-    container_name: api    
-    image: node:18    
-    working_dir: /usr/src/clean-node-api
-    restart: always
-    command: bash -c "yarn --prod && yarn debug"
-    volumes:
-      - ./dist/:/usr/src/clean-node-api/dist
-      - ./package.json:/usr/src/clean-node-api/package.json
-    ports:
-      - 5050:5050
-      - 9222:9222
-    environment:
-      - MONGO_URL=mongodb://root:example@mongo:27017/clean-node-api
-    links:
-      - mongo
+    networks:
+      - dev
+
+networks:
+  dev:
+    driver: bridge
 
