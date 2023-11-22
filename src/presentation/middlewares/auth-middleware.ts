@@ -9,15 +9,15 @@ export class AuthMiddleware implements Middleware {
   handle = async (httpRequest: HttpRequest): Promise<HttpResponse> => {
     httpRequest;
     const accessToken = httpRequest.headers?.['x-access-token'];
-    if (!accessToken) {
-      return forbidden(new AccessDeniedError());
+    if (accessToken) {
+      const account = await this.loadAccountByToken.load(accessToken);
+      if (account) {
+        return ok({
+          accountId: account.id,
+        });
+      }
     }
 
-    const account = await this.loadAccountByToken.load(accessToken);
-
-    if (!account) {
-      return forbidden(new AccessDeniedError());
-    }
-    return ok(account);
+    return forbidden(new AccessDeniedError());
   };
 }
