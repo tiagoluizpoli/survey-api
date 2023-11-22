@@ -45,10 +45,13 @@ const makeSut = (): MakeSutResult => {
 
 describe('Auth Middleware', () => {
   it('should return 403 if no x-access-token exists in headers', async () => {
+    // Arrange
     const { sut } = makeSut();
 
+    // Act
     const httpResponse = await sut.handle({});
 
+    // Assert
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
   });
 
