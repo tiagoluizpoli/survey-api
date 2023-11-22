@@ -1,5 +1,5 @@
 import { AccessDeniedError } from '../errors';
-import { forbidden } from '../helpers';
+import { forbidden, ok } from '../helpers';
 import { AuthMiddleware } from './auth-middleware';
 import { AccountModel, LoadAccountByToken } from '../../domain';
 import { HttpRequest } from '../protocols';
@@ -74,6 +74,7 @@ describe('Auth Middleware', () => {
     // Assert
     expect(loadSpy).toHaveBeenCalledWith('any_token');
   });
+
   it('should return 403 if LoadAccountByToken returns null', async () => {
     // Arrange
     const { sut, loadAccountByTokenStub } = makeSut();
@@ -85,5 +86,21 @@ describe('Auth Middleware', () => {
 
     // Assert
     expect(httpResponse).toEqual(forbidden(new AccessDeniedError()));
+  });
+
+  it('should return 200 if LoadAccountByToken returns an account', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    const { httpRequest, fakeAccount } = makeFakeData();
+
+    // Act
+    const httpResponse = await sut.handle(httpRequest);
+
+    // Assert
+    expect(httpResponse).toEqual(
+      ok({
+        accountId: fakeAccount.id,
+      }),
+    );
   });
 });
