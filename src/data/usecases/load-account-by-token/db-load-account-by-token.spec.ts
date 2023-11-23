@@ -24,7 +24,7 @@ const makeSut = (): MakeSutResult => {
 };
 
 describe('DbLoadAccountByToken Usecase', () => {
-  it('shoud call Decrypter with correct values', async () => {
+  it('shoud return Decrypter with correct values', async () => {
     // Arrange
     const { sut, decrypterStub } = makeSut();
     const decryptSpy = jest.spyOn(decrypterStub, 'decrypt');
@@ -32,5 +32,15 @@ describe('DbLoadAccountByToken Usecase', () => {
     await sut.load('any_token');
     // Assert
     expect(decryptSpy).toHaveBeenCalledWith('any_token');
+  });
+
+  it('shoud return null if Decrypter return null', async () => {
+    // Arrange
+    const { sut, decrypterStub } = makeSut();
+    jest.spyOn(decrypterStub, 'decrypt').mockReturnValueOnce(Promise.resolve(null));
+    // Act
+    const account = await sut.load('any_token', 'any_role');
+    // Assert
+    expect(account).toBeNull();
   });
 });
