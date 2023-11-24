@@ -5,7 +5,7 @@
 - [x] Recebe uma requisição do tipo **POST** na rota **/api/sorveys**
 - [x] Valida se a requisição foi feita por um admin
 - [x] Valida dados obrigatórios **question** e **answers**
-- [ ] Valida se o campo Answers tem pelo menos 2 respostas
+- [x] Valida se o campo Answers tem pelo menos 2 respostas
 - [x] Cria uma enquete com os dados fornecidos
 - [x] Retorna 204
 
