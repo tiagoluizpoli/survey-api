@@ -93,4 +93,16 @@ describe('DbLoadAccountByToken Usecase', () => {
     // Assert
     expect(account).toBeNull();
   });
+
+  it('shoud return an account on success', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    const { account } = makeFakeData();
+
+    // Act
+    const accountResult = await sut.load('any_token', 'any_role');
+
+    // Assert
+    expect(accountResult).toEqual(account);
+  });
 });
