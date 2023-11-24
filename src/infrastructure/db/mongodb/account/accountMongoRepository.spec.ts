@@ -101,4 +101,20 @@ describe('AccountRepository (Mongodb)', () => {
       expect(account?.accessToken).toBe('any_token');
     });
   });
+
+  describe('loadByToken()', () => {
+    it('should return an account on loadByToken without role', async () => {
+      const { sut } = makeSut();
+      const { addAccount } = makeFakeData();
+      await accountCollection.insertOne({ ...addAccount, id: 'any_id', accessToken: 'any_token' });
+
+      const account = await sut.loadByToken('any_token');
+
+      expect(account).toBeTruthy();
+      expect(account?.id).toBeTruthy();
+      expect(account?.name).toBe('any_name');
+      expect(account?.email).toBe('any@email.com');
+      expect(account?.password).toBe('any_password');
+    });
+  });
 });
