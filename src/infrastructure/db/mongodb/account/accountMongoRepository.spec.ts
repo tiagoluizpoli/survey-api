@@ -38,62 +38,67 @@ describe('AccountRepository (Mongodb)', () => {
     await accountCollection.deleteMany({});
   });
 
-  it('should return an account on add success', async () => {
-    const { sut } = makeSut();
-    const { addAccount } = makeFakeData();
+  describe('add()', () => {
+    it('should return an account on add success', async () => {
+      const { sut } = makeSut();
+      const { addAccount } = makeFakeData();
 
-    const account = await sut.add(addAccount);
+      const account = await sut.add(addAccount);
 
-    expect(account).toBeTruthy();
-    expect(account.id).toBeTruthy();
-    expect(account.name).toBe('any_name');
-    expect(account.email).toBe('any@email.com');
-    expect(account.password).toBe('any_password');
-  });
-
-  it('should return an account on loadByEmail success', async () => {
-    const { sut } = makeSut();
-    const { addAccount } = makeFakeData();
-    await accountCollection.insertOne({ ...addAccount, id: 'any_id' });
-
-    const account = await sut.loadByEmail(addAccount.email);
-
-    expect(account).toBeTruthy();
-    expect(account?.id).toBeTruthy();
-    expect(account?.name).toBe('any_name');
-    expect(account?.email).toBe('any@email.com');
-    expect(account?.password).toBe('any_password');
-  });
-
-  it('should return null if loadByEmail fails', async () => {
-    const { sut } = makeSut();
-    const { addAccount } = makeFakeData();
-
-    const account = await sut.loadByEmail(addAccount.email);
-
-    expect(account).toBeFalsy();
-  });
-
-  it('should update the account accessToken on updateAccessTokenSuccess', async () => {
-    const { sut } = makeSut();
-    const { addAccount } = makeFakeData();
-
-    // insert one account to be updated afterwards.
-    const res = await accountCollection.insertOne({ ...addAccount, id: 'any_id' });
-
-    // fetch the account updated and test if accessToken is undefined (falsy)
-    const accountBeforeUpdate = await accountCollection.findOne<AccountModel>({
-      _id: res.insertedId,
+      expect(account).toBeTruthy();
+      expect(account.id).toBeTruthy();
+      expect(account.name).toBe('any_name');
+      expect(account.email).toBe('any@email.com');
+      expect(account.password).toBe('any_password');
     });
-    expect(accountBeforeUpdate?.accessToken).toBeFalsy();
+  });
+  describe('loadByEmmail()', () => {
+    it('should return an account on loadByEmail success', async () => {
+      const { sut } = makeSut();
+      const { addAccount } = makeFakeData();
+      await accountCollection.insertOne({ ...addAccount, id: 'any_id' });
 
-    // update account accessToken and test if accesstoken was successfuly updated
-    await sut.updateAccessToken(res.insertedId.toString(), 'any_token');
-    const account = await accountCollection.findOne<AccountModel>({
-      _id: res.insertedId,
+      const account = await sut.loadByEmail(addAccount.email);
+
+      expect(account).toBeTruthy();
+      expect(account?.id).toBeTruthy();
+      expect(account?.name).toBe('any_name');
+      expect(account?.email).toBe('any@email.com');
+      expect(account?.password).toBe('any_password');
     });
 
-    expect(account).toBeTruthy();
-    expect(account?.accessToken).toBe('any_token');
+    it('should return null if loadByEmail fails', async () => {
+      const { sut } = makeSut();
+      const { addAccount } = makeFakeData();
+
+      const account = await sut.loadByEmail(addAccount.email);
+
+      expect(account).toBeFalsy();
+    });
+  });
+
+  describe('updateAccessToken()', () => {
+    it('should update the account accessToken on updateAccessTokenSuccess', async () => {
+      const { sut } = makeSut();
+      const { addAccount } = makeFakeData();
+
+      // insert one account to be updated afterwards.
+      const res = await accountCollection.insertOne({ ...addAccount, id: 'any_id' });
+
+      // fetch the account updated and test if accessToken is undefined (falsy)
+      const accountBeforeUpdate = await accountCollection.findOne<AccountModel>({
+        _id: res.insertedId,
+      });
+      expect(accountBeforeUpdate?.accessToken).toBeFalsy();
+
+      // update account accessToken and test if accesstoken was successfuly updated
+      await sut.updateAccessToken(res.insertedId.toString(), 'any_token');
+      const account = await accountCollection.findOne<AccountModel>({
+        _id: res.insertedId,
+      });
+
+      expect(account).toBeTruthy();
+      expect(account?.accessToken).toBe('any_token');
+    });
   });
 });
