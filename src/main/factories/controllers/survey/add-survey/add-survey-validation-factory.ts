@@ -1,5 +1,9 @@
 import { Validation } from '../../../../../presentation';
-import { RequiredFieldValidation, ValidationComposite } from '../../../../../validation';
+import {
+  RequiredFieldLenghtValidation,
+  RequiredFieldValidation,
+  ValidationComposite,
+} from '../../../../../validation';
 
 export const makeAddSurveyValidation = (): Validation => {
   const validations: Validation[] = [];
@@ -7,6 +11,7 @@ export const makeAddSurveyValidation = (): Validation => {
   for (const field of requiredFields) {
     validations.push(new RequiredFieldValidation(field));
   }
+  validations.push(new RequiredFieldLenghtValidation('answers', 2));
 
   return new ValidationComposite(validations);
 };

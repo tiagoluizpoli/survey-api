@@ -1,6 +1,6 @@
 export class InvalidParamLenght extends Error {
   constructor(paramName: string) {
-    super(`The ${paramName}'s lenght is under the required`);
+    super(`The array field '${paramName}' lenght is under the required`);
     this.name = 'InvalidParamLenght';
   }
 }
