@@ -4,3 +4,4 @@ export * from './server.error';
 export * from './unauthorized.error';
 export * from './accountAlreadyExists.error';
 export * from './access-denied.error';
+export * from './Invalid-param-lenght-error';
