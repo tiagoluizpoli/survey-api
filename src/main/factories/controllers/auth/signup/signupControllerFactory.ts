@@ -1,6 +1,6 @@
-import { SignUpController } from '../../../../presentation';
-import { makeLogControllerDecorator } from '../../decorators';
-import { makeDbAddAccount, makeDbAuthentication } from '../../usecases';
+import { SignUpController } from '../../../../../presentation';
+import { makeLogControllerDecorator } from '../../../decorators';
+import { makeDbAddAccount, makeDbAuthentication } from '../../../usecases';
 import { makeSignUpValidation } from './signupValidationFactory';
 
 export const makeSignUpController = () => {

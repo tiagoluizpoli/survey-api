@@ -1,6 +1,6 @@
-import { DbAddAccount } from '../../../../data';
-import { AddAccount } from '../../../../domain';
-import { AccountMongoRepository, BcryptAdapter } from '../../../../infrastructure';
+import { DbAddAccount } from '../../../../../data';
+import { AddAccount } from '../../../../../domain';
+import { AccountMongoRepository, BcryptAdapter } from '../../../../../infrastructure';
 
 export const makeDbAddAccount = (): AddAccount => {
   const salt = 12;

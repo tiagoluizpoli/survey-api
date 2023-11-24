@@ -1,3 +1,2 @@
-export * from './authentication';
-export * from './dbAccount';
-export * from './dbAddSurvey';
+export * from './account';
+export * from './survey';
