@@ -1,2 +1,2 @@
-export * from './signup';
-export * from './login';
+export * from './authentication';
+export * from './survey';
