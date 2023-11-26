@@ -49,16 +49,18 @@ describe('AccountRepository (Mongodb)', () => {
     await surveyCollection.deleteMany({});
   });
 
-  it('should add a survey on success', async () => {
-    const { sut } = makeSut();
-    const { addAccount } = makeFakeData();
+  describe('add()', () => {
+    it('should add a survey on success', async () => {
+      const { sut } = makeSut();
+      const { addAccount } = makeFakeData();
 
-    await sut.add(addAccount);
+      await sut.add(addAccount);
 
-    const survey = await surveyCollection.findOne({
-      question: addAccount.question,
+      const survey = await surveyCollection.findOne({
+        question: addAccount.question,
+      });
+
+      expect(survey).toBeTruthy();
     });
-
-    expect(survey).toBeTruthy();
   });
 });
