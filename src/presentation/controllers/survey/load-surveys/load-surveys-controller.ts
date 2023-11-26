@@ -6,8 +6,8 @@ export class LoadSurveysController implements Controller {
   constructor(private readonly loadSurveys: LoadSurveys) {}
   handle = async (httpRequest: HttpRequest): Promise<HttpResponse> => {
     httpRequest;
-    await this.loadSurveys.load();
+    const response = await this.loadSurveys.load();
 
-    return ok({});
+    return ok(response);
   };
 }
