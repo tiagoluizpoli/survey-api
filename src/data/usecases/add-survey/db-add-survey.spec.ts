@@ -1,7 +1,7 @@
 import { AddSurvey, AddSurveyModel } from '../../../domain';
 import { DbAddSurvey } from './db-add-survey';
 import { AddSurveyRepository } from '../../protocols';
-
+import mockDate from 'mockdate';
 interface MakeDataResult {
   surveyData: AddSurveyModel;
 }
@@ -14,6 +14,7 @@ const makeData = (): MakeDataResult => {
         answer: 'any_answer',
       },
     ],
+    date: new Date(),
   };
   return { surveyData };
 };
@@ -42,6 +43,12 @@ const makeSut = (): MakeSutResult => {
 };
 
 describe('AddSurvey UseCase', () => {
+  beforeAll(() => {
+    mockDate.set(new Date());
+  });
+  afterAll(() => {
+    mockDate.reset();
+  });
   it('shoud call AddSurveyRepository with correct values', async () => {
     // Arrange
     const { sut, addSurvayRepositoryStub } = makeSut();

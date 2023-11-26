@@ -1,8 +1,9 @@
 import { Controller, HttpRequest, Validation } from '../../../protocols';
 import { AddSurveyController } from './add-survey-controller';
 import { badRequest, noContent, serverError } from '../../../helpers';
-import { AddSurvey, AddSurveyModel } from '../../../../domain';
 
+import { AddSurvey, AddSurveyModel } from '../../../../domain';
+import mockDate from 'mockdate';
 interface MakeFakeDataResult {
   httpRequest: HttpRequest;
 }
@@ -16,6 +17,7 @@ const makeFakeData = (): MakeFakeDataResult => {
           answer: 'any_answer',
         },
       ],
+      date: new Date(),
     },
   };
 
@@ -59,6 +61,13 @@ const makeSut = (): MakeSutResult => {
 };
 
 describe('AddSurvey Controller', () => {
+  beforeAll(() => {
+    mockDate.set(new Date());
+  });
+  afterAll(() => {
+    mockDate.reset();
+  });
+
   it('should call Validation with correct values', async () => {
     //Arrange
     const { sut, validationStub } = makeSut();

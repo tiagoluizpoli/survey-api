@@ -19,6 +19,7 @@ const makeFakeData = (): MakeFakeDataResult => {
         answer: 'any_answer',
       },
     ],
+    date: new Date(),
   };
 
   return { addAccount };
