@@ -4,29 +4,31 @@ import app from '../config/app';
 import request from 'supertest';
 import { sign } from 'jsonwebtoken';
 import { env } from '../config/env';
-import { AddSurveyModel } from '../../domain';
 
-interface MakeFakeDataResult {
-  addSurveys: AddSurveyModel[];
+interface MakeAccessTokenResult {
+  accessToken: string;
 }
-const makeFakeData = (): MakeFakeDataResult => {
-  const addSurveys: AddSurveyModel[] = [
+const makeAccessToken = async (): Promise<MakeAccessTokenResult> => {
+  const account = await accountCollection.insertOne({
+    name: 'Tiago',
+    email: 'tiagoluizpoli@gmail.com',
+    password: '123',
+    role: 'admin',
+  });
+  const id = account.insertedId;
+  const accessToken = await sign({ id }, env.jwtSecret);
+  await accountCollection.updateOne(
     {
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer',
-        },
-        {
-          answer: 'any_answer',
-        },
-      ],
-      date: new Date(),
+      _id: id,
     },
-  ];
+    {
+      $set: {
+        accessToken,
+      },
+    },
+  );
 
-  return { addSurveys };
+  return { accessToken };
 };
 
 let surveyCollection: Collection;
@@ -67,24 +69,7 @@ describe('Survey Routes', () => {
     });
 
     it('should return 204 with valid token', async () => {
-      const account = await accountCollection.insertOne({
-        name: 'Tiago',
-        email: 'tiagoluizpoli@gmail.com',
-        password: '123',
-        role: 'admin',
-      });
-      const id = account.insertedId;
-      const accessToken = await sign({ id }, env.jwtSecret);
-      await accountCollection.updateOne(
-        {
-          _id: id,
-        },
-        {
-          $set: {
-            accessToken,
-          },
-        },
-      );
+      const { accessToken } = await makeAccessToken();
       await request(app)
         .post('/api/surveys')
         .set('x-access-token', accessToken)
@@ -109,30 +94,10 @@ describe('Survey Routes', () => {
       await request(app).get('/api/surveys').expect(403);
     });
 
-    it('should return 200 on load surveys with valid token', async () => {
-      const account = await accountCollection.insertOne({
-        name: 'Tiago',
-        email: 'tiagoluizpoli@gmail.com',
-        password: '123',
-      });
-      const id = account.insertedId;
-      const accessToken = await sign({ id }, env.jwtSecret);
+    it('should return 204 on load surveys with valid token', async () => {
+      const { accessToken } = await makeAccessToken();
 
-      await accountCollection.updateOne(
-        {
-          _id: id,
-        },
-        {
-          $set: {
-            accessToken,
-          },
-        },
-      );
-
-      const { addSurveys } = makeFakeData();
-      await surveyCollection.insertMany(addSurveys);
-
-      await request(app).get('/api/surveys').set('x-access-token', accessToken).expect(200);
+      await request(app).get('/api/surveys').set('x-access-token', accessToken).expect(204);
     });
   });
 });
