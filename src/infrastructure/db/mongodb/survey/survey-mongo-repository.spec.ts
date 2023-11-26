@@ -137,5 +137,16 @@ describe('AccountRepository (Mongodb)', () => {
       expect(surveysResult[0].question).toBe('any_question');
       expect(surveysResult[1].question).toBe('other_question');
     });
+
+    it('should return an empty list if there are no surveys', async () => {
+      // Arrange
+      const { sut } = makeSut();
+
+      // Act
+      const surveysResult = await sut.loadAll();
+
+      // Assert
+      expect(surveysResult.length).toBe(0);
+    });
   });
 });
