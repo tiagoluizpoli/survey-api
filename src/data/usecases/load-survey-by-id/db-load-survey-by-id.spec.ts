@@ -96,4 +96,19 @@ describe('DbLoadSurveyById', () => {
     // Assert
     expect(surveysResult).toEqual(survey);
   });
+
+  it('shoud throw if LoadSurveyRepository throws', async () => {
+    // Arrange
+    const { sut, loadSurveyByIdRepositoryStub } = makeSut();
+
+    jest
+      .spyOn(loadSurveyByIdRepositoryStub, 'loadById')
+      .mockReturnValueOnce(Promise.reject(new Error()));
+
+    // Act
+    const promise = sut.loadById('any_id');
+
+    // Assert
+    await expect(promise).rejects.toThrow();
+  });
 });
