@@ -1,7 +1,7 @@
 import { AccessDeniedError } from '../errors';
 import { forbidden, ok, serverError } from '../helpers';
 import { AuthMiddleware } from './auth-middleware';
-import { AccountModel, LoadAccountByToken } from '../../domain';
+import { AccountModel, LoadAccountByToken } from '@/domain';
 import { HttpRequest } from '../protocols';
 
 interface MakeFakeData {

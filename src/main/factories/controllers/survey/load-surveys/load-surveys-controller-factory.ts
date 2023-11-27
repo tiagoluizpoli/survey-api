@@ -1,4 +1,4 @@
-import { Controller, LoadSurveysController } from '../../../../../presentation';
+import { Controller, LoadSurveysController } from '@/presentation';
 import { makeLogControllerDecorator } from '../../../decorators';
 import { makeDbLoadSurveys } from '../../../usecases';
 

@@ -4,7 +4,7 @@ import {
   AccountModel,
   Authentication,
   AuthenticationModel,
-} from '../../../../domain';
+} from '@/domain';
 import { AccountAlreadyExistsError, MissingParamError } from '../../../errors';
 
 import { SignUpController } from './signupController';

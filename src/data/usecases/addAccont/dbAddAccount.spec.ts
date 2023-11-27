@@ -1,5 +1,5 @@
-import { AccountModel, AddAccountModel, AuthenticationModel } from '../../../domain';
-import { MongoHelper } from '../../../infrastructure';
+import { AccountModel, AddAccountModel, AuthenticationModel } from '@/domain';
+import { MongoHelper } from '@/infrastructure';
 
 import { AddAccountRepository, LoadAccountByEmailRepository } from '../../protocols';
 import { Hasher } from '../../protocols/criptography/hasher';

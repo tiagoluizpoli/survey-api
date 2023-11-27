@@ -2,7 +2,7 @@ import { Controller, HttpRequest, Validation } from '../../../protocols';
 import { AddSurveyController } from './add-survey-controller';
 import { badRequest, noContent, serverError } from '../../../helpers';
 
-import { AddSurvey, AddSurveyModel } from '../../../../domain';
+import { AddSurvey, AddSurveyModel } from '@/domain';
 import mockDate from 'mockdate';
 interface MakeFakeDataResult {
   httpRequest: HttpRequest;

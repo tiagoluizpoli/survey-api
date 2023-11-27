@@ -1,4 +1,4 @@
-import { AddSurvey, AddSurveyModel } from '../../../domain';
+import { AddSurvey, AddSurveyModel } from '@/domain';
 import { AddSurveyRepository } from '../../protocols';
 
 export class DbAddSurvey implements AddSurvey {

@@ -1,10 +1,6 @@
-import { EmailValidatorAdapter } from '../../../../../infrastructure';
-import { Validation } from '../../../../../presentation';
-import {
-  RequiredFieldValidation,
-  EmailValidation,
-  ValidationComposite,
-} from '../../../../../validation';
+import { EmailValidatorAdapter } from '@/infrastructure';
+import { Validation } from '@/presentation';
+import { RequiredFieldValidation, EmailValidation, ValidationComposite } from '@/validation';
 
 export const makeSignInValidation = (): Validation => {
   const validations: Validation[] = [];

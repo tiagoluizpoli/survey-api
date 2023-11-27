@@ -1,4 +1,4 @@
-import { Authentication, AuthenticationModel } from '../../../domain';
+import { Authentication, AuthenticationModel } from '@/domain';
 import {
   HashComparer,
   LoadAccountByEmailRepository,

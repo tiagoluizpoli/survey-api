@@ -4,8 +4,8 @@ import {
   LoadAccountByEmailRepository,
   LoadAccountByTokenRepository,
   UpdateAccessTokenRepository,
-} from '../../../../data';
-import { AddAccountModel, AccountModel } from '../../../../domain';
+} from '@/data';
+import { AddAccountModel, AccountModel } from '@/domain';
 import { MongoHelper } from '../helpers';
 
 export class AccountMongoRepository

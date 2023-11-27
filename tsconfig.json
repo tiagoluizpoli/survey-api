@@ -12,19 +12,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
-    "rootDir": "src"
-    // "baseUrl": ".",
-    // "paths": {
-    //   "@/src/*": [
-    //     "src/*"
-    //   ],
-    // }
+    "rootDir": "src",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+    }
   },
   "include": [
     "src"
-  ],
-  "exclude": [
-    "**/*.spec.ts",
-    "**/*.test.ts",
   ]
 }

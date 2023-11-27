@@ -1,5 +1,5 @@
 import validator from 'validator';
-import { EmailValidator } from '../../validation';
+import { EmailValidator } from '@/validation';
 
 export class EmailValidatorAdapter implements EmailValidator {
   constructor() {}

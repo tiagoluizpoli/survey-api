@@ -1,6 +1,6 @@
-import { DbAddSurvey } from '../../../../../data';
-import { AddSurvey } from '../../../../../domain';
-import { SurveyMongoRepository } from '../../../../../infrastructure';
+import { DbAddSurvey } from '@/data';
+import { AddSurvey } from '@/domain';
+import { SurveyMongoRepository } from '@/infrastructure';
 
 export const makeDbAddSurvey = (): AddSurvey => {
   const surveyMongoRepository = new SurveyMongoRepository();

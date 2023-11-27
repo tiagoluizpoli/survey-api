@@ -1,6 +1,6 @@
-import { DbAuthentication } from '../../../../../data';
-import { Authentication } from '../../../../../domain';
-import { AccountMongoRepository, BcryptAdapter, JwtAdapter } from '../../../../../infrastructure';
+import { DbAuthentication } from '@/data';
+import { Authentication } from '@/domain';
+import { AccountMongoRepository, BcryptAdapter, JwtAdapter } from '@/infrastructure';
 
 import { env } from '../../../../config';
 

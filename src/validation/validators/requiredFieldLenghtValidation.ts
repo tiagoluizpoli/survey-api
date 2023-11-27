@@ -1,4 +1,4 @@
-import { Validation, InvalidParamLenght } from '../../presentation';
+import { Validation, InvalidParamLenght } from '@/presentation';
 
 export class RequiredFieldLenghtValidation implements Validation {
   constructor(

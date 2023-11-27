@@ -1,5 +1,5 @@
 import { RequiredFieldValidation } from './requiredFieldValidation';
-import { MissingParamError } from '../../presentation';
+import { MissingParamError } from '@/presentation';
 
 interface MakeSutResult {
   sut: RequiredFieldValidation;

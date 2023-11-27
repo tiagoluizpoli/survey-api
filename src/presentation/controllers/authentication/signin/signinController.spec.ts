@@ -1,4 +1,4 @@
-import { Authentication, AuthenticationModel } from '../../../../domain';
+import { Authentication, AuthenticationModel } from '@/domain';
 import { Validation, Controller, HttpRequest } from '../../../protocols';
 import { SignInController } from './signinController';
 import { unauthorized, serverError, badRequest, ok } from '../../../helpers';

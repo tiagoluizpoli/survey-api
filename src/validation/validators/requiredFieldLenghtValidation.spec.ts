@@ -1,4 +1,4 @@
-import { InvalidParamLenght } from '../../presentation';
+import { InvalidParamLenght } from '@/presentation';
 import { RequiredFieldLenghtValidation } from './requiredFieldLenghtValidation';
 
 interface MakeSutResult {

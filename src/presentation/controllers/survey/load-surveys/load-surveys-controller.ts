@@ -1,4 +1,4 @@
-import { LoadSurveys } from '../../../../domain';
+import { LoadSurveys } from '@/domain';
 import { noContent, ok, serverError } from '../../../helpers';
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols';
 

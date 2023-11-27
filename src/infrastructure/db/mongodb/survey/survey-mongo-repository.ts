@@ -1,5 +1,5 @@
-import { AddSurveyRepository, LoadSurveysRepository } from '../../../../data';
-import { AddSurveyModel, SurveyModel } from '../../../../domain';
+import { AddSurveyRepository, LoadSurveysRepository } from '@/data';
+import { AddSurveyModel, SurveyModel } from '@/domain';
 import { MongoHelper } from '../helpers';
 
 export class SurveyMongoRepository implements AddSurveyRepository, LoadSurveysRepository {

@@ -1,6 +1,6 @@
-import { DbLoadAccountByToken } from '../../../../../data';
-import { LoadAccountByToken } from '../../../../../domain';
-import { AccountMongoRepository, JwtAdapter } from '../../../../../infrastructure';
+import { DbLoadAccountByToken } from '@/data';
+import { LoadAccountByToken } from '@/domain';
+import { AccountMongoRepository, JwtAdapter } from '@/infrastructure';
 import { env } from '../../../../config';
 
 export const makeDbLoadAccountByToken = (): LoadAccountByToken => {

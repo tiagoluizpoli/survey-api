@@ -1,5 +1,5 @@
 import { Collection } from 'mongodb';
-import { MongoHelper } from '../../infrastructure';
+import { MongoHelper } from '@/infrastructure';
 import app from '../config/app';
 import request from 'supertest';
 import { sign } from 'jsonwebtoken';

@@ -1,4 +1,4 @@
-import { AddSurvey } from '../../../../domain';
+import { AddSurvey } from '@/domain';
 import { badRequest, noContent, serverError } from '../../../helpers';
 import { Controller, HttpRequest, HttpResponse, Validation } from '../../../protocols';
 

@@ -1,4 +1,4 @@
-import { Controller, SignInController } from '../../../../../presentation';
+import { Controller, SignInController } from '@/presentation';
 import { makeLogControllerDecorator } from '../../../decorators';
 
 import { makeDbAuthentication } from '../../../usecases';

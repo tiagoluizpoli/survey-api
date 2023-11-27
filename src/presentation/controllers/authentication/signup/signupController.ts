@@ -1,7 +1,7 @@
-import { AddAccount, Authentication } from '../../../../domain';
+import { AddAccount, Authentication } from '@/domain';
 import { Validation } from '../../../protocols';
 
-import { badRequest, forbidden, ok, serverError } from '../../../helpers/http/httpHelper';
+import { badRequest, forbidden, ok, serverError } from '../../../helpers';
 import { Controller, HttpRequest, HttpResponse } from '../../../protocols';
 import { AccountAlreadyExistsError } from '../../../errors';
 

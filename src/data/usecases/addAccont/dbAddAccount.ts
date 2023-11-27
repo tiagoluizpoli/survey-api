@@ -1,4 +1,4 @@
-import { AccountModel, AddAccountModel, AddAccount as AddAccountProtocol } from '../../../domain';
+import { AccountModel, AddAccountModel, AddAccount as AddAccountProtocol } from '@/domain';
 
 import { AddAccountRepository, Hasher, LoadAccountByEmailRepository } from '../../protocols';
 

@@ -1,4 +1,4 @@
-import { HttpRequest, InvalidParamError } from '../../presentation';
+import { HttpRequest, InvalidParamError } from '@/presentation';
 import { EmailValidation } from '.';
 import { EmailValidator } from '../protocols';
 const makeFakeRequest = (): HttpRequest => ({
