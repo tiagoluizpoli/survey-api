@@ -27,6 +27,7 @@ export const MongoHelper: IMongoHelper = {
   async getCollection(name: string): Promise<Collection> {
     return this.client!.db().collection(name);
   },
+
   map<T>(collection: WithId<T> | null) {
     const { _id, ...newAccount } = collection as WithId<T>;
 
