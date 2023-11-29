@@ -1,4 +1,4 @@
-import { HttpRequest, forbidden, serverError } from '@/presentation';
+import { HttpRequest, forbidden, ok, serverError } from '@/presentation';
 import {
   LoadSurveyById,
   SaveSurveyResult,
@@ -184,5 +184,17 @@ describe('SaveSurveyResult Controller', () => {
 
     //Assert
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it('shoud return 200 on success', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    const { httpRequest, surveyResult } = makeFakeData();
+
+    // Act
+    const httpResponse = await sut.handle(httpRequest);
+
+    // Assert
+    expect(httpResponse).toEqual(ok(surveyResult));
   });
 });
