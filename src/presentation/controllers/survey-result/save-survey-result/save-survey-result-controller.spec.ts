@@ -14,6 +14,9 @@ const makeFakeData = (): MakeFakeData => {
     params: {
       surveyId: 'any_survey_id',
     },
+    body: {
+      answer: 'any_answer',
+    },
   };
 
   const survey: SurveyModel = {
@@ -54,7 +57,7 @@ const makeSut = (): MakeSutResult => {
   return { sut, loadSurveyByIdStub };
 };
 
-describe('SaveSurveyResult Controller', () => {
+describe('SaveSurveyResultController', () => {
   it('shoud call LoadSurveyById with correct value', async () => {
     // Arrange
     const { sut, loadSurveyByIdStub } = makeSut();
@@ -94,5 +97,23 @@ describe('SaveSurveyResult Controller', () => {
 
     // Assert
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it('shoud return 403 invald answer is provided', async () => {
+    // Arrange
+    const { sut } = makeSut();
+
+    // Act
+    const httpResponse = await sut.handle({
+      params: {
+        surveyId: 'any_survey_id',
+      },
+      body: {
+        answer: 'wrong_answer',
+      },
+    });
+
+    // Assert
+    expect(httpResponse).toEqual(forbidden(new InvalidParamError('answer')));
   });
 });
