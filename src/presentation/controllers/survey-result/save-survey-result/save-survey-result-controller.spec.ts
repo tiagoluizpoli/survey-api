@@ -93,7 +93,7 @@ const makeSut = (): MakeSutResult => {
   return { sut, loadSurveyByIdStub, saveSurveyResultStub };
 };
 
-describe('SaveSurveyResult Controller', () => {
+describe('SaveSurveyResultController', () => {
   beforeAll(() => {
     mockDate.set(new Date());
   });
