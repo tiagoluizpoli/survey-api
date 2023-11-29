@@ -8,7 +8,7 @@
 - [x] Valida se o campo **answer** é uma resposta válida
 - [x] **Cria** um resultado de enquete com os dados fornecidos caso não tenha um registro
 - [x] **Atualiza** um resultado de enquete com os dados fornecidos caso já exista um registro
-- [ ] Retorna 200 com os dados do resultado da enquete
+- [x] Retorna 200 com os dados do resultado da enquete
 
 ## Excessões
 
