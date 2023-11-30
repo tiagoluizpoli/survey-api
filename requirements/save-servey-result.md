@@ -3,12 +3,12 @@
 > ## Caso de sucesso
 
 - [x] Recebe uma requisição do tipo **PUT** na rota **/api/surveys/{survey_id}/results**
-- [ ] Valida se a requisição foi feita por um **usuário**
+- [x] Valida se a requisição foi feita por um **usuário**
 - [x] Valida o parâmetro **survey_id**
 - [x] Valida se o campo **answer** é uma resposta válida
 - [x] **Cria** um resultado de enquete com os dados fornecidos caso não tenha um registro
 - [x] **Atualiza** um resultado de enquete com os dados fornecidos caso já exista um registro
-- [ ] Retorna 200 com os dados do resultado da enquete
+- [x] Retorna 200 com os dados do resultado da enquete
 
 ## Excessões
 
