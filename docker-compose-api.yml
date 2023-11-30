@@ -14,8 +14,7 @@ services:
       - 5050:5050
       - 9222:9222
     environment:
-      - MONGO_URL=mongodb://root:example@mongo:27017/clean-node-api
-      - JWT_SECRET=57a7b454baf24e6d-8f2c433ec6265a30
+      - MONGO_URL=mongodb://root:example@mongo:27017/clean-node-api      
     links:
       - mongo
     networks:

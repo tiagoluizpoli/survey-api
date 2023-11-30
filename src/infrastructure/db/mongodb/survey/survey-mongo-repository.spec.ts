@@ -149,4 +149,20 @@ describe('AccountRepository (Mongodb)', () => {
       expect(surveysResult.length).toBe(0);
     });
   });
+
+  describe('loadById()', () => {
+    it('should load a survey by id on success', async () => {
+      // Arrange
+      const { sut } = makeSut();
+      const { addSurvey } = makeFakeData();
+      const res = await surveyCollection.insertOne(addSurvey);
+      const id = res.insertedId.toString();
+
+      // Act
+      const survey = await sut.loadById(id);
+
+      // Assert
+      expect(survey).toBeTruthy();
+    });
+  });
 });
