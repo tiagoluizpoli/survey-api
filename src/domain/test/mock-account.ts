@@ -9,9 +9,7 @@ export const mockAccountData = () => {
 
   const accountMock: AccountModel = {
     id: 'any_id',
-    name: 'any_name',
-    email: 'any@email.com',
-    password: 'any_password',
+    ...addAccountMock,
   };
 
   return { addAccountMock, accountMock };

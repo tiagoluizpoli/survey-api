@@ -1,4 +1,4 @@
-import { AccountModel, Authentication } from '@/domain';
+import { Authentication } from '@/domain';
 import {
   HashComparer,
   LoadAccountByEmailRepository,
@@ -7,31 +7,12 @@ import {
 } from '@/data';
 import { DbAuthentication } from './dbAuthentication';
 import { mockAccountData, mockAutehnticationData } from '@/domain/test';
-import { mockHashComparer, mockEncrypter } from '@/data/test';
-
-const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
-  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    loadByEmail = async (email: string): Promise<AccountModel | null> => {
-      email;
-      const { accountMock } = mockAccountData();
-      return Promise.resolve(accountMock);
-    };
-  }
-
-  return new LoadAccountByEmailRepositoryStub();
-};
-
-const makeUpdateAccessTokenRepository = (): UpdateAccessTokenRepository => {
-  class UpdateAccessTokenRepositoryStub implements UpdateAccessTokenRepository {
-    updateAccessToken = async (id: string, token: string): Promise<void> => {
-      id;
-      token;
-      return Promise.resolve(undefined);
-    };
-  }
-
-  return new UpdateAccessTokenRepositoryStub();
-};
+import {
+  mockHashComparer,
+  mockEncrypter,
+  mockSuccessLoadAccountByEmailRepository,
+  mockUpdateAccessTokenRepository,
+} from '@/data/test';
 
 interface MakeSutResult {
   sut: Authentication;
@@ -41,10 +22,10 @@ interface MakeSutResult {
   updateAccessTokenRepositoryStub: UpdateAccessTokenRepository;
 }
 const makeSut = (): MakeSutResult => {
-  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
+  const loadAccountByEmailRepositoryStub = mockSuccessLoadAccountByEmailRepository();
   const hashComparerStub = mockHashComparer();
   const encrypterStub = mockEncrypter();
-  const updateAccessTokenRepositoryStub = makeUpdateAccessTokenRepository();
+  const updateAccessTokenRepositoryStub = mockUpdateAccessTokenRepository();
   const sut = new DbAuthentication(
     loadAccountByEmailRepositoryStub,
     hashComparerStub,

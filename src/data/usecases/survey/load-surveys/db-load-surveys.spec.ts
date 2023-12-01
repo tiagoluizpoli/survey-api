@@ -1,18 +1,7 @@
-import { SurveyModel } from '@/domain';
 import { LoadSurveysRepository } from '@/data';
 import { DbLoadSurveys } from './db-load-surveys';
 import { mockSurveyData } from '@/domain/test';
-
-const makeLoadSurveysRepository = (): LoadSurveysRepository => {
-  class LoadSurveysRepositoryStub implements LoadSurveysRepository {
-    loadAll = (): Promise<SurveyModel[]> => {
-      const { surveysMock } = mockSurveyData();
-      return Promise.resolve(surveysMock);
-    };
-  }
-
-  return new LoadSurveysRepositoryStub();
-};
+import { mockLoadSurveysRepository } from '@/data/test';
 
 interface MakeSutResult {
   sut: DbLoadSurveys;
@@ -20,7 +9,7 @@ interface MakeSutResult {
 }
 
 const makeSut = (): MakeSutResult => {
-  const loadSurveysRepositoryStub = makeLoadSurveysRepository();
+  const loadSurveysRepositoryStub = mockLoadSurveysRepository();
   const sut = new DbLoadSurveys(loadSurveysRepositoryStub);
 
   return { sut, loadSurveysRepositoryStub };

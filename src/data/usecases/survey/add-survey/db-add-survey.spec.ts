@@ -1,20 +1,10 @@
-import { AddSurvey, AddSurveyParams } from '@/domain';
+import { AddSurvey } from '@/domain';
 import { DbAddSurvey } from './db-add-survey';
 import { AddSurveyRepository } from '@/data';
 
 import mockDate from 'mockdate';
 import { mockSurveyData } from '@/domain/test';
-
-const makeAddSurvayRepository = (): AddSurveyRepository => {
-  class AddSurveyRepositoryStub implements AddSurveyRepository {
-    add = async (surveyData: AddSurveyParams): Promise<void> => {
-      surveyData;
-      return Promise.resolve(undefined);
-    };
-  }
-
-  return new AddSurveyRepositoryStub();
-};
+import { mockAddSurvayRepository } from '@/data/test';
 
 interface MakeSutResult {
   sut: AddSurvey;
@@ -22,7 +12,7 @@ interface MakeSutResult {
 }
 
 const makeSut = (): MakeSutResult => {
-  const addSurvayRepositoryStub = makeAddSurvayRepository();
+  const addSurvayRepositoryStub = mockAddSurvayRepository();
   const sut = new DbAddSurvey(addSurvayRepositoryStub);
 
   return { sut, addSurvayRepositoryStub };

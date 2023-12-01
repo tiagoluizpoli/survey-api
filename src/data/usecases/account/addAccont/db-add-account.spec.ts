@@ -1,35 +1,14 @@
-import { AccountModel, AddAccountParams } from '@/domain';
 import { MongoHelper } from '@/infrastructure';
 
 import { AddAccountRepository, LoadAccountByEmailRepository, Hasher } from '@/data';
 
 import { DbAddAccount } from './db-add-account';
 import { mockAccountData } from '@/domain/test';
-import { mockHasher } from '@/data/test';
-
-const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
-  class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
-    loadByEmail = async (email: string): Promise<AccountModel | null> => {
-      email;
-
-      return Promise.resolve(null);
-    };
-  }
-
-  return new LoadAccountByEmailRepositoryStub();
-};
-
-const makeAddAccountRepository = (): AddAccountRepository => {
-  class AddAccountRepositoryStub implements AddAccountRepository {
-    add = async (account: AddAccountParams): Promise<AccountModel> => {
-      account;
-
-      const { accountMock } = mockAccountData();
-      return await Promise.resolve(accountMock);
-    };
-  }
-  return new AddAccountRepositoryStub();
-};
+import {
+  mockAddAccountRepository,
+  mockHasher,
+  mockNullLoadAccountByEmailRepository,
+} from '@/data/test';
 
 interface MakeSutResult {
   sut: DbAddAccount;
@@ -41,9 +20,9 @@ interface MakeSutResult {
 const makeSut = (): MakeSutResult => {
   const hasherStub = mockHasher();
 
-  const addAccountRepositoryStub = makeAddAccountRepository();
+  const addAccountRepositoryStub = mockAddAccountRepository();
 
-  const loadAccountByEmailRepositoryStub = makeLoadAccountByEmailRepository();
+  const loadAccountByEmailRepositoryStub = mockNullLoadAccountByEmailRepository();
 
   const sut = new DbAddAccount(
     hasherStub,
