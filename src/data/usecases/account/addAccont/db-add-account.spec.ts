@@ -5,16 +5,7 @@ import { AddAccountRepository, LoadAccountByEmailRepository, Hasher } from '@/da
 
 import { DbAddAccount } from './db-add-account';
 import { mockAccountData } from '@/domain/test';
-
-const makeHasher = (): Hasher => {
-  class HasherStub implements Hasher {
-    hash = async (value: string): Promise<string> => {
-      value;
-      return await Promise.resolve('hashed_password');
-    };
-  }
-  return new HasherStub();
-};
+import { mockHasher } from '@/data/test';
 
 const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
   class LoadAccountByEmailRepositoryStub implements LoadAccountByEmailRepository {
@@ -48,7 +39,7 @@ interface MakeSutResult {
 }
 
 const makeSut = (): MakeSutResult => {
-  const hasherStub = makeHasher();
+  const hasherStub = mockHasher();
 
   const addAccountRepositoryStub = makeAddAccountRepository();
 

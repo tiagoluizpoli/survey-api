@@ -2,16 +2,7 @@ import { AccountModel, LoadAccountByToken } from '@/domain';
 import { Decrypter, LoadAccountByTokenRepository } from '@/data';
 import { DbLoadAccountByToken } from './db-load-account-by-token';
 import { mockAccountData } from '@/domain/test';
-
-const makeDecrypter = () => {
-  class DecrypterStub implements Decrypter {
-    decrypt = (value: string): Promise<string> => {
-      value;
-      return Promise.resolve('any_token');
-    };
-  }
-  return new DecrypterStub();
-};
+import { mockDecrypter } from '@/data/test';
 
 const makeAccountByTokenRepository = () => {
   class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
@@ -31,7 +22,7 @@ interface MakeSutResult {
 }
 
 const makeSut = (): MakeSutResult => {
-  const decrypterStub = makeDecrypter();
+  const decrypterStub = mockDecrypter();
   const loadAccountByTokenRepositoryStub = makeAccountByTokenRepository();
   const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub);
   return { sut, decrypterStub, loadAccountByTokenRepositoryStub };
