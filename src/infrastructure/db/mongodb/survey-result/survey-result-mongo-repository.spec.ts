@@ -1,4 +1,4 @@
-import { AddAccountModel, AddSurveyModel, SurveyModel } from '@/domain';
+import { AddAccountParams, AddSurveyParams, SurveyModel } from '@/domain';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
 import { Collection } from 'mongodb';
@@ -9,11 +9,11 @@ let surveyResultCollection: Collection;
 let accountCollection: Collection;
 
 interface MakeFakeDataResult {
-  addSurvey: AddSurveyModel;
-  addAccount: AddAccountModel;
+  addSurvey: AddSurveyParams;
+  addAccount: AddAccountParams;
 }
 const makeFakeData = (): MakeFakeDataResult => {
-  const addSurvey: AddSurveyModel = {
+  const addSurvey: AddSurveyParams = {
     question: 'any_question',
     answers: [
       {
@@ -27,7 +27,7 @@ const makeFakeData = (): MakeFakeDataResult => {
     date: new Date(),
   };
 
-  const addAccount: AddAccountModel = {
+  const addAccount: AddAccountParams = {
     name: 'any_name',
     email: 'any@email.com',
     password: 'hashed_password',

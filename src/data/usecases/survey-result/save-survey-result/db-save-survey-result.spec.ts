@@ -1,4 +1,4 @@
-import { SaveSurveyResult, SaveSurveyResultModel, SurveyResultModel } from '@/domain';
+import { SaveSurveyResult, SaveSurveyResultParams, SurveyResultModel } from '@/domain';
 import { SaveSurveyResultRepository } from '@/data';
 
 import { DbSaveSurveyResult } from './db-save-survey-result';
@@ -7,10 +7,10 @@ import mockDate from 'mockdate';
 
 interface MakeDataResult {
   surveyResult: SurveyResultModel;
-  saveSurveyResult: SaveSurveyResultModel;
+  saveSurveyResult: SaveSurveyResultParams;
 }
 const makeData = (): MakeDataResult => {
-  const saveSurveyResult: SaveSurveyResultModel = {
+  const saveSurveyResult: SaveSurveyResultParams = {
     accountId: 'any_id',
     surveyId: 'any_survey_id',
     date: new Date(),
@@ -26,7 +26,7 @@ const makeData = (): MakeDataResult => {
 
 const makeSaveSurvayResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurvayResultRepositoryStub implements SaveSurveyResultRepository {
-    save = async (data: SaveSurveyResultModel): Promise<SurveyResultModel> => {
+    save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel> => {
       data;
       const { surveyResult } = makeData();
       return Promise.resolve(surveyResult);

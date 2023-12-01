@@ -1,10 +1,10 @@
 import { Collection } from 'mongodb';
-import { AccountModel, AddAccountModel } from '@/domain';
+import { AccountModel, AddAccountParams } from '@/domain';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { AccountMongoRepository } from './accountMongoRepository';
 
 interface MakeFakeDataResult {
-  addAccount: AddAccountModel;
+  addAccount: AddAccountParams;
 }
 const makeFakeData = (): MakeFakeDataResult => {
   const addAccount = {

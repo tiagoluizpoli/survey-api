@@ -2,7 +2,7 @@ import { HttpRequest, forbidden, ok, serverError } from '@/presentation';
 import {
   LoadSurveyById,
   SaveSurveyResult,
-  SaveSurveyResultModel,
+  SaveSurveyResultParams,
   SurveyModel,
   SurveyResultModel,
 } from '@/domain';
@@ -14,7 +14,7 @@ import mockDate from 'mockdate';
 interface MakeFakeData {
   httpRequest: HttpRequest;
   survey: SurveyModel;
-  saveSurveyResult: SaveSurveyResultModel;
+  saveSurveyResult: SaveSurveyResultParams;
   surveyResult: SurveyResultModel;
 }
 
@@ -39,7 +39,7 @@ const makeFakeData = (): MakeFakeData => {
     ],
     date: new Date(),
   };
-  const saveSurveyResult: SaveSurveyResultModel = {
+  const saveSurveyResult: SaveSurveyResultParams = {
     surveyId: 'any_survey_id',
     accountId: 'any_account_id',
     answer: 'any_answer',
@@ -69,7 +69,7 @@ const makeLoadSurveyById = (): LoadSurveyById => {
 
 const makeSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    save = async (data: SaveSurveyResultModel): Promise<SurveyResultModel> => {
+    save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel> => {
       data;
       const { surveyResult } = makeFakeData();
       return Promise.resolve(surveyResult);

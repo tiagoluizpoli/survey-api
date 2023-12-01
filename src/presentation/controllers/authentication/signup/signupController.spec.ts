@@ -1,9 +1,9 @@
 import {
   AddAccount,
-  AddAccountModel,
+  AddAccountParams,
   AccountModel,
   Authentication,
-  AuthenticationModel,
+  AuthenticationParams,
 } from '@/domain';
 import { AccountAlreadyExistsError, MissingParamError } from '../../../errors';
 
@@ -41,7 +41,7 @@ const makeFakeSignupData = (): makeFakeDataResult => {
 
 const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
-    async add(account: AddAccountModel): Promise<AccountModel> {
+    async add(account: AddAccountParams): Promise<AccountModel> {
       account;
       const { fakeAccount } = makeFakeSignupData();
       return await Promise.resolve(fakeAccount);
@@ -52,7 +52,7 @@ const makeAddAccount = (): AddAccount => {
 
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    authenticate = (authentication: AuthenticationModel): Promise<string> => {
+    authenticate = (authentication: AuthenticationParams): Promise<string> => {
       authentication;
       return Promise.resolve('any_token');
     };

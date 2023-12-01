@@ -1,15 +1,15 @@
-import { AddSurveyModel, SurveyModel } from '@/domain';
+import { AddSurveyParams, SurveyModel } from '@/domain';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { SurveyMongoRepository } from './survey-mongo-repository';
 import { Collection } from 'mongodb';
 
 interface MakeFakeDataResult {
-  addSurvey: AddSurveyModel;
-  addSurveys: AddSurveyModel[];
+  addSurvey: AddSurveyParams;
+  addSurveys: AddSurveyParams[];
   surveys: SurveyModel[];
 }
 const makeFakeData = (): MakeFakeDataResult => {
-  const addSurvey: AddSurveyModel = {
+  const addSurvey: AddSurveyParams = {
     question: 'any_question',
     answers: [
       {
@@ -54,7 +54,7 @@ const makeFakeData = (): MakeFakeDataResult => {
     },
   ];
 
-  const addSurveys: AddSurveyModel[] = [
+  const addSurveys: AddSurveyParams[] = [
     {
       question: 'any_question',
       answers: [

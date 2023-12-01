@@ -1,4 +1,4 @@
-import { Authentication, AuthenticationModel } from '@/domain';
+import { Authentication, AuthenticationParams } from '@/domain';
 import { Validation, Controller, HttpRequest } from '../../../protocols';
 import { SignInController } from './signinController';
 import { unauthorized, serverError, badRequest, ok } from '../../../helpers';
@@ -14,7 +14,7 @@ const makeFakeRequest = (): HttpRequest => ({
 });
 const makeAuthentication = (): Authentication => {
   class AuthenticationStub implements Authentication {
-    authenticate = (authentication: AuthenticationModel): Promise<string> => {
+    authenticate = (authentication: AuthenticationParams): Promise<string> => {
       authentication;
       return Promise.resolve('any_token');
     };

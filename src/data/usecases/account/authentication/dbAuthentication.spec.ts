@@ -1,4 +1,4 @@
-import { AccountModel, Authentication, AuthenticationModel } from '@/domain';
+import { AccountModel, Authentication, AuthenticationParams } from '@/domain';
 import {
   HashComparer,
   LoadAccountByEmailRepository,
@@ -9,7 +9,7 @@ import { DbAuthentication } from './dbAuthentication';
 
 interface MakeFakeData {
   fakeAccount: AccountModel;
-  fakeAuthentication: AuthenticationModel;
+  fakeAuthentication: AuthenticationParams;
 }
 
 const makeFakeData = (): MakeFakeData => {
@@ -20,7 +20,7 @@ const makeFakeData = (): MakeFakeData => {
     password: 'hashed_password',
   };
 
-  const fakeAuthentication: AuthenticationModel = {
+  const fakeAuthentication: AuthenticationParams = {
     email: 'any@email.com',
     password: 'any_password',
   };

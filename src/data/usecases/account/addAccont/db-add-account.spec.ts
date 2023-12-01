@@ -1,4 +1,4 @@
-import { AccountModel, AddAccountModel, AuthenticationModel } from '@/domain';
+import { AccountModel, AddAccountParams, AuthenticationParams } from '@/domain';
 import { MongoHelper } from '@/infrastructure';
 
 import { AddAccountRepository, LoadAccountByEmailRepository, Hasher } from '@/data';
@@ -6,13 +6,13 @@ import { AddAccountRepository, LoadAccountByEmailRepository, Hasher } from '@/da
 import { DbAddAccount } from './db-add-account';
 
 interface MakeFakeData {
-  fakeAddAccountData: AddAccountModel;
+  fakeAddAccountData: AddAccountParams;
   fakeAccount: AccountModel;
-  fakeAuthentication: AuthenticationModel;
+  fakeAuthentication: AuthenticationParams;
 }
 
 const makeFakeData = (): MakeFakeData => {
-  const fakeAddAccountData: AddAccountModel = {
+  const fakeAddAccountData: AddAccountParams = {
     name: 'valid_name',
     email: 'any@email.com',
     password: 'valid_password',
@@ -25,7 +25,7 @@ const makeFakeData = (): MakeFakeData => {
     password: 'valid_password',
   };
 
-  const fakeAuthentication: AuthenticationModel = {
+  const fakeAuthentication: AuthenticationParams = {
     email: 'any@email.com',
     password: 'any_password',
   };
@@ -57,7 +57,7 @@ const makeLoadAccountByEmailRepository = (): LoadAccountByEmailRepository => {
 
 const makeAddAccountRepository = (): AddAccountRepository => {
   class AddAccountRepositoryStub implements AddAccountRepository {
-    add = async (account: AddAccountModel): Promise<AccountModel> => {
+    add = async (account: AddAccountParams): Promise<AccountModel> => {
       account;
 
       const { fakeAccount } = makeFakeData();
