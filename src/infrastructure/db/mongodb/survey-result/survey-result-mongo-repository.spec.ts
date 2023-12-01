@@ -1,38 +1,17 @@
-import { AddSurveyParams, SurveyModel } from '@/domain';
+import { SurveyModel } from '@/domain';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
 import { Collection } from 'mongodb';
-import { mockAccountData } from '@/domain/test';
+import { mockAccountData, mockSurveyData } from '@/domain/test';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let surveyCollection: Collection;
 let surveyResultCollection: Collection;
 let accountCollection: Collection;
 
-interface MakeFakeDataResult {
-  addSurvey: AddSurveyParams;
-}
-const makeFakeData = (): MakeFakeDataResult => {
-  const addSurvey: AddSurveyParams = {
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer',
-      },
-      {
-        answer: 'any_answer',
-      },
-    ],
-    date: new Date(),
-  };
-
-  return { addSurvey };
-};
-
 const makeSurvey = async (): Promise<SurveyModel> => {
-  const { addSurvey } = makeFakeData();
-  const insertResult = await surveyCollection.insertOne(addSurvey);
+  const { addSurveyMock } = mockSurveyData();
+  const insertResult = await surveyCollection.insertOne(addSurveyMock);
   const survey = await surveyCollection.findOne({ _id: insertResult.insertedId });
 
   return {

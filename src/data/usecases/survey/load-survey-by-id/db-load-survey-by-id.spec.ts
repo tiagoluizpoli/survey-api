@@ -3,51 +3,14 @@ import { SurveyModel } from '@/domain';
 import { DbLoadSurveyById } from './db-load-survey-by-id';
 
 import mockDate from 'mockdate';
-
-const makeFakeData = () => {
-  const survey = {
-    id: 'any_id',
-    question: 'any_question',
-    answers: [
-      {
-        answer: 'any_answer',
-      },
-    ],
-    date: new Date(),
-  };
-  const surveys: SurveyModel[] = [
-    {
-      id: 'any_id',
-      question: 'any_question',
-      answers: [
-        {
-          answer: 'any_answer',
-        },
-      ],
-      date: new Date(),
-    },
-
-    {
-      id: 'other_id',
-      question: 'other_question',
-      answers: [
-        {
-          answer: 'other_answer',
-        },
-      ],
-      date: new Date(),
-    },
-  ];
-
-  return { survey, surveys };
-};
+import { mockSurveyData } from '@/domain/test';
 
 const makeLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
   class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
     loadById = (id: string): Promise<SurveyModel> => {
       id;
-      const { survey } = makeFakeData();
-      return Promise.resolve(survey);
+      const { surveyMock } = mockSurveyData();
+      return Promise.resolve(surveyMock);
     };
   }
 
@@ -89,13 +52,13 @@ describe('DbLoadSurveyById', () => {
   it('shoud return a Survey on success', async () => {
     // Arrange
     const { sut } = makeSut();
-    const { survey } = makeFakeData();
+    const { surveyMock } = mockSurveyData();
 
     // Act
     const surveysResult = await sut.loadById('any_id');
 
     // Assert
-    expect(surveysResult).toEqual(survey);
+    expect(surveysResult).toEqual(surveyMock);
   });
 
   it('shoud throw if LoadSurveyRepository throws', async () => {

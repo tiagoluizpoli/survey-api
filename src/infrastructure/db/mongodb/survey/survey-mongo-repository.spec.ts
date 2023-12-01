@@ -1,90 +1,7 @@
-import { AddSurveyParams, SurveyModel } from '@/domain';
+import { mockSurveyData } from '@/domain/test';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { SurveyMongoRepository } from './survey-mongo-repository';
 import { Collection } from 'mongodb';
-
-interface MakeFakeDataResult {
-  addSurvey: AddSurveyParams;
-  addSurveys: AddSurveyParams[];
-  surveys: SurveyModel[];
-}
-const makeFakeData = (): MakeFakeDataResult => {
-  const addSurvey: AddSurveyParams = {
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer',
-      },
-      {
-        answer: 'any_answer',
-      },
-    ],
-    date: new Date(),
-  };
-
-  const surveys: SurveyModel[] = [
-    {
-      id: 'any_id',
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer',
-        },
-        {
-          answer: 'any_answer',
-        },
-      ],
-      date: new Date(),
-    },
-    {
-      id: 'other_id',
-      question: 'other_question',
-      answers: [
-        {
-          image: 'other_image',
-          answer: 'other_answer',
-        },
-        {
-          answer: 'other_answer',
-        },
-      ],
-      date: new Date(),
-    },
-  ];
-
-  const addSurveys: AddSurveyParams[] = [
-    {
-      question: 'any_question',
-      answers: [
-        {
-          image: 'any_image',
-          answer: 'any_answer',
-        },
-        {
-          answer: 'any_answer',
-        },
-      ],
-      date: new Date(),
-    },
-    {
-      question: 'other_question',
-      answers: [
-        {
-          image: 'other_image',
-          answer: 'other_answer',
-        },
-        {
-          answer: 'other_answer',
-        },
-      ],
-      date: new Date(),
-    },
-  ];
-
-  return { addSurvey, addSurveys, surveys };
-};
 
 interface MakeSutResult {
   sut: SurveyMongoRepository;
@@ -113,12 +30,12 @@ describe('AccountRepository (Mongodb)', () => {
   describe('add()', () => {
     it('should add a survey on success', async () => {
       const { sut } = makeSut();
-      const { addSurvey } = makeFakeData();
+      const { addSurveyMock } = mockSurveyData();
 
-      await sut.add(addSurvey);
+      await sut.add(addSurveyMock);
 
       const survey = await surveyCollection.findOne({
-        question: addSurvey.question,
+        question: addSurveyMock.question,
       });
 
       expect(survey).toBeTruthy();
@@ -128,8 +45,8 @@ describe('AccountRepository (Mongodb)', () => {
   describe('loadAll()', () => {
     it('should load all surveys on success', async () => {
       const { sut } = makeSut();
-      const { addSurveys } = makeFakeData();
-      await surveyCollection.insertMany(addSurveys);
+      const { addSurveysMock } = mockSurveyData();
+      await surveyCollection.insertMany(addSurveysMock);
 
       const surveysResult = await sut.loadAll();
 
@@ -154,8 +71,8 @@ describe('AccountRepository (Mongodb)', () => {
     it('should load a survey by id on success', async () => {
       // Arrange
       const { sut } = makeSut();
-      const { addSurvey } = makeFakeData();
-      const res = await surveyCollection.insertOne(addSurvey);
+      const { addSurveyMock } = mockSurveyData();
+      const res = await surveyCollection.insertOne(addSurveyMock);
       const id = res.insertedId.toString();
 
       // Act
