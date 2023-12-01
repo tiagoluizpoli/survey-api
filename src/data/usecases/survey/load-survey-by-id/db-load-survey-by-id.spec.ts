@@ -1,21 +1,9 @@
 import { LoadSurveyByIdRepository } from '@/data';
-import { SurveyModel } from '@/domain';
 import { DbLoadSurveyById } from './db-load-survey-by-id';
 
 import mockDate from 'mockdate';
 import { mockSurveyData } from '@/domain/test';
-
-const makeLoadSurveyByIdRepository = (): LoadSurveyByIdRepository => {
-  class LoadSurveyByIdRepositoryStub implements LoadSurveyByIdRepository {
-    loadById = (id: string): Promise<SurveyModel> => {
-      id;
-      const { surveyMock } = mockSurveyData();
-      return Promise.resolve(surveyMock);
-    };
-  }
-
-  return new LoadSurveyByIdRepositoryStub();
-};
+import { mockLoadSurveyByIdRepository } from '@/data/test';
 
 interface MakeSutResult {
   sut: DbLoadSurveyById;
@@ -23,7 +11,7 @@ interface MakeSutResult {
 }
 
 const makeSut = (): MakeSutResult => {
-  const loadSurveyByIdRepositoryStub = makeLoadSurveyByIdRepository();
+  const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository();
   const sut = new DbLoadSurveyById(loadSurveyByIdRepositoryStub);
 
   return { sut, loadSurveyByIdRepositoryStub };

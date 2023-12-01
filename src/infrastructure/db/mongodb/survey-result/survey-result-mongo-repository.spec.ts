@@ -9,7 +9,7 @@ let surveyCollection: Collection;
 let surveyResultCollection: Collection;
 let accountCollection: Collection;
 
-const makeSurvey = async (): Promise<SurveyModel> => {
+const mockSurvey = async (): Promise<SurveyModel> => {
   const { addSurveyMock } = mockSurveyData();
   const insertResult = await surveyCollection.insertOne(addSurveyMock);
   const survey = await surveyCollection.findOne({ _id: insertResult.insertedId });
@@ -22,7 +22,7 @@ const makeSurvey = async (): Promise<SurveyModel> => {
   };
 };
 
-const makeAccount = async (): Promise<string> => {
+const mockAccount = async (): Promise<string> => {
   const { addAccountMock } = mockAccountData();
   return (await accountCollection.insertOne(addAccountMock)).insertedId.toString();
 };
@@ -57,8 +57,8 @@ describe('AccountRepository (Mongodb)', () => {
 
   describe('save()', () => {
     it('should add a surveyResult if its new', async () => {
-      const survey = await makeSurvey();
-      const accountId = await makeAccount();
+      const survey = await mockSurvey();
+      const accountId = await mockAccount();
       const { sut } = makeSut();
 
       const surveyResult = await sut.save({
@@ -74,8 +74,8 @@ describe('AccountRepository (Mongodb)', () => {
     });
 
     it('should update a surveyResult if its not new', async () => {
-      const survey = await makeSurvey();
-      const accountId = await makeAccount();
+      const survey = await mockSurvey();
+      const accountId = await mockAccount();
       const res = await surveyResultCollection.insertOne({
         surveyId: survey.id,
         accountId,

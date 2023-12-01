@@ -4,6 +4,7 @@ import { badRequest, noContent, serverError } from '../../../helpers';
 
 import { AddSurvey, AddSurveyParams } from '@/domain';
 import mockDate from 'mockdate';
+import { mockValidation } from '@/validation/test';
 interface MakeFakeDataResult {
   httpRequest: HttpRequest;
 }
@@ -26,16 +27,6 @@ const makeFakeData = (): MakeFakeDataResult => {
   };
 };
 
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate = (input: unknown): Error | null => {
-      input;
-      return null;
-    };
-  }
-  return new ValidationStub();
-};
-
 const makeAddSurvey = (): AddSurvey => {
   class AddSurveyStub implements AddSurvey {
     add = async (data: AddSurveyParams): Promise<void> => {
@@ -53,7 +44,7 @@ interface MakeSutResult {
 }
 
 const makeSut = (): MakeSutResult => {
-  const validationStub = makeValidation();
+  const validationStub = mockValidation();
   const addSurveyStub = makeAddSurvey();
   const sut = new AddSurveyController(validationStub, addSurveyStub);
 

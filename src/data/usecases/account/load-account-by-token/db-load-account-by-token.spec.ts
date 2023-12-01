@@ -1,20 +1,9 @@
-import { AccountModel, LoadAccountByToken } from '@/domain';
+import { LoadAccountByToken } from '@/domain';
 import { Decrypter, LoadAccountByTokenRepository } from '@/data';
 import { DbLoadAccountByToken } from './db-load-account-by-token';
 import { mockAccountData } from '@/domain/test';
-import { mockDecrypter } from '@/data/test';
+import { mockDecrypter, mockLoadAccountByTokenRepository } from '@/data/test';
 
-const makeAccountByTokenRepository = () => {
-  class LoadAccountByTokenRepositoryStub implements LoadAccountByTokenRepository {
-    loadByToken = (value: string, role?: string): Promise<AccountModel> => {
-      value;
-      role;
-      const { accountMock } = mockAccountData();
-      return Promise.resolve(accountMock);
-    };
-  }
-  return new LoadAccountByTokenRepositoryStub();
-};
 interface MakeSutResult {
   sut: LoadAccountByToken;
   decrypterStub: Decrypter;
@@ -23,7 +12,7 @@ interface MakeSutResult {
 
 const makeSut = (): MakeSutResult => {
   const decrypterStub = mockDecrypter();
-  const loadAccountByTokenRepositoryStub = makeAccountByTokenRepository();
+  const loadAccountByTokenRepositoryStub = mockLoadAccountByTokenRepository();
   const sut = new DbLoadAccountByToken(decrypterStub, loadAccountByTokenRepositoryStub);
   return { sut, decrypterStub, loadAccountByTokenRepositoryStub };
 };

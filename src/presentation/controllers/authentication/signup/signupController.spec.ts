@@ -1,16 +1,12 @@
-import {
-  AddAccount,
-  AddAccountParams,
-  AccountModel,
-  Authentication,
-  AuthenticationParams,
-} from '@/domain';
+import { AddAccount, AddAccountParams, AccountModel, Authentication } from '@/domain';
 import { AccountAlreadyExistsError, MissingParamError } from '../../../errors';
 
 import { SignUpController } from './signupController';
 import { HttpRequest, Validation } from '../../../protocols';
 import { badRequest, forbidden, ok, serverError } from '../../../helpers';
 import { mockAccountData } from '@/domain/test';
+import { mockAuthentication } from '@/presentation/test';
+import { mockValidation } from '@/validation/test';
 
 interface makeFakeDataResult {
   httpRequest: HttpRequest;
@@ -42,26 +38,6 @@ const makeAddAccount = (): AddAccount => {
   return new AddAccountStub();
 };
 
-const makeAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    authenticate = (authentication: AuthenticationParams): Promise<string> => {
-      authentication;
-      return Promise.resolve('any_token');
-    };
-  }
-  return new AuthenticationStub();
-};
-
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate(input: unknown): Error | null {
-      input;
-      return null;
-    }
-  }
-  return new ValidationStub();
-};
-
 interface MakeSutResult {
   sut: SignUpController;
   addAccountStub: AddAccount;
@@ -70,8 +46,8 @@ interface MakeSutResult {
 }
 const makeSut = (): MakeSutResult => {
   const addAccountStub = makeAddAccount();
-  const validationStub = makeValidation();
-  const authenticationStub = makeAuthentication();
+  const validationStub = mockValidation();
+  const authenticationStub = mockAuthentication();
 
   const sut = new SignUpController(addAccountStub, validationStub, authenticationStub);
   return {
