@@ -1,7 +1,8 @@
-import { AddAccountParams, AddSurveyParams, SurveyModel } from '@/domain';
+import { AddSurveyParams, SurveyModel } from '@/domain';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
 import { Collection } from 'mongodb';
+import { mockAccountData } from '@/domain/test';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let surveyCollection: Collection;
@@ -10,7 +11,6 @@ let accountCollection: Collection;
 
 interface MakeFakeDataResult {
   addSurvey: AddSurveyParams;
-  addAccount: AddAccountParams;
 }
 const makeFakeData = (): MakeFakeDataResult => {
   const addSurvey: AddSurveyParams = {
@@ -27,13 +27,7 @@ const makeFakeData = (): MakeFakeDataResult => {
     date: new Date(),
   };
 
-  const addAccount: AddAccountParams = {
-    name: 'any_name',
-    email: 'any@email.com',
-    password: 'hashed_password',
-  };
-
-  return { addSurvey, addAccount };
+  return { addSurvey };
 };
 
 const makeSurvey = async (): Promise<SurveyModel> => {
@@ -50,8 +44,8 @@ const makeSurvey = async (): Promise<SurveyModel> => {
 };
 
 const makeAccount = async (): Promise<string> => {
-  const { addAccount } = makeFakeData();
-  return (await accountCollection.insertOne(addAccount)).insertedId.toString();
+  const { addAccountMock } = mockAccountData();
+  return (await accountCollection.insertOne(addAccountMock)).insertedId.toString();
 };
 
 interface MakeSutResult {

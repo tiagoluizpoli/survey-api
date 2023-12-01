@@ -66,11 +66,7 @@ describe('AddSurvey UseCase', () => {
 
   it('should throw if AddSurveyRepository throws', async () => {
     const { sut, addSurvayRepositoryStub } = makeSut();
-    jest.spyOn(addSurvayRepositoryStub, 'add').mockReturnValueOnce(
-      new Promise((_, rejects) => {
-        return rejects(new Error());
-      }),
-    );
+    jest.spyOn(addSurvayRepositoryStub, 'add').mockReturnValueOnce(Promise.reject(new Error()));
     const { surveyData } = makeData();
 
     const promise = sut.add(surveyData);

@@ -10,14 +10,14 @@ import { AccountAlreadyExistsError, MissingParamError } from '../../../errors';
 import { SignUpController } from './signupController';
 import { HttpRequest, Validation } from '../../../protocols';
 import { badRequest, forbidden, ok, serverError } from '../../../helpers';
+import { mockAccountData } from '@/domain/test';
 
 interface makeFakeDataResult {
   httpRequest: HttpRequest;
-  fakeAccount: AccountModel;
 }
 
 const makeFakeSignupData = (): makeFakeDataResult => {
-  const fakeHttpRequest: HttpRequest = {
+  const httpRequest: HttpRequest = {
     body: {
       name: 'any_name',
       email: 'any@email.com',
@@ -26,16 +26,8 @@ const makeFakeSignupData = (): makeFakeDataResult => {
     },
   };
 
-  const fakeAccountModel = {
-    id: 'valid_id',
-    name: 'valid_name',
-    email: 'valid_email',
-    password: 'valid_password',
-  };
-
   return {
-    httpRequest: fakeHttpRequest,
-    fakeAccount: fakeAccountModel,
+    httpRequest,
   };
 };
 
@@ -43,8 +35,8 @@ const makeAddAccount = (): AddAccount => {
   class AddAccountStub implements AddAccount {
     async add(account: AddAccountParams): Promise<AccountModel> {
       account;
-      const { fakeAccount } = makeFakeSignupData();
-      return await Promise.resolve(fakeAccount);
+      const { accountMock } = mockAccountData();
+      return await Promise.resolve(accountMock);
     }
   }
   return new AddAccountStub();

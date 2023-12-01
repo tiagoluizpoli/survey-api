@@ -100,9 +100,7 @@ describe('SignIn Controller', () => {
   it('should return 401 if invalid credentials provided', async () => {
     const { sut, authenticationStub } = makeSut();
 
-    jest
-      .spyOn(authenticationStub, 'authenticate')
-      .mockReturnValueOnce(new Promise((resolve) => resolve(null)));
+    jest.spyOn(authenticationStub, 'authenticate').mockReturnValueOnce(Promise.resolve(null));
 
     const { httpRequest } = makeFakeData();
 
