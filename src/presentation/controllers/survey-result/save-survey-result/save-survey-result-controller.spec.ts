@@ -1,17 +1,12 @@
 import { HttpRequest, forbidden, ok, serverError } from '@/presentation';
-import {
-  LoadSurveyById,
-  SaveSurveyResult,
-  SaveSurveyResultParams,
-  SurveyModel,
-  SurveyResultModel,
-} from '@/domain';
+import { LoadSurveyById, SaveSurveyResult } from '@/domain';
 import { SaveSurveyResultController } from './save-survey-result-controller';
 
 import { InvalidParamError } from '@/presentation/errors';
 
 import mockDate from 'mockdate';
-import { mockSurveyData, mockSurveyResultData } from '@/domain/test';
+import { mockSurveyResultData } from '@/domain/test';
+import { mockLoadSurveyById, mockSaveSurveyResult } from '@/presentation/test';
 interface MakeFakeData {
   httpRequest: HttpRequest;
 }
@@ -30,30 +25,6 @@ const makeFakeData = (): MakeFakeData => {
   return { httpRequest };
 };
 
-const makeLoadSurveyById = (): LoadSurveyById => {
-  class LoadSurveyByIdStub implements LoadSurveyById {
-    loadById = (id: string): Promise<SurveyModel> => {
-      id;
-      const { surveyMock } = mockSurveyData();
-      return Promise.resolve(surveyMock);
-    };
-  }
-
-  return new LoadSurveyByIdStub();
-};
-
-const makeSaveSurveyResult = (): SaveSurveyResult => {
-  class SaveSurveyResultStub implements SaveSurveyResult {
-    save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel> => {
-      data;
-      const { surveyResultMock } = mockSurveyResultData();
-      return Promise.resolve(surveyResultMock);
-    };
-  }
-
-  return new SaveSurveyResultStub();
-};
-
 interface MakeSutResult {
   sut: SaveSurveyResultController;
   loadSurveyByIdStub: LoadSurveyById;
@@ -61,8 +32,8 @@ interface MakeSutResult {
 }
 
 const makeSut = (): MakeSutResult => {
-  const loadSurveyByIdStub = makeLoadSurveyById();
-  const saveSurveyResultStub = makeSaveSurveyResult();
+  const loadSurveyByIdStub = mockLoadSurveyById();
+  const saveSurveyResultStub = mockSaveSurveyResult();
 
   const sut = new SaveSurveyResultController(loadSurveyByIdStub, saveSurveyResultStub);
   return { sut, loadSurveyByIdStub, saveSurveyResultStub };

@@ -1,7 +1,7 @@
 import { AddAccountRepository, Hasher, LoadAccountByEmailRepository } from '@/data';
-import { AccountModel, AddAccountParams, AddAccount as AddAccountProtocol } from '@/domain';
+import { AccountModel, AddAccountParams, AddAccount } from '@/domain';
 
-export class DbAddAccount implements AddAccountProtocol {
+export class DbAddAccount implements AddAccount {
   constructor(
     private readonly hasher: Hasher,
     private readonly addAccountRepository: AddAccountRepository,

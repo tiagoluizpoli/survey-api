@@ -1,11 +1,11 @@
-import { AddAccount, AddAccountParams, AccountModel, Authentication } from '@/domain';
+import { AddAccount, Authentication } from '@/domain';
 import { AccountAlreadyExistsError, MissingParamError } from '../../../errors';
 
 import { SignUpController } from './signupController';
 import { HttpRequest, Validation } from '../../../protocols';
 import { badRequest, forbidden, ok, serverError } from '../../../helpers';
-import { mockAccountData } from '@/domain/test';
-import { mockAuthentication } from '@/presentation/test';
+
+import { mockAddAccount, mockAuthentication } from '@/presentation/test';
 import { mockValidation } from '@/validation/test';
 
 interface makeFakeDataResult {
@@ -27,17 +27,6 @@ const makeFakeSignupData = (): makeFakeDataResult => {
   };
 };
 
-const makeAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add(account: AddAccountParams): Promise<AccountModel> {
-      account;
-      const { accountMock } = mockAccountData();
-      return await Promise.resolve(accountMock);
-    }
-  }
-  return new AddAccountStub();
-};
-
 interface MakeSutResult {
   sut: SignUpController;
   addAccountStub: AddAccount;
@@ -45,7 +34,7 @@ interface MakeSutResult {
   authenticationStub: Authentication;
 }
 const makeSut = (): MakeSutResult => {
-  const addAccountStub = makeAddAccount();
+  const addAccountStub = mockAddAccount();
   const validationStub = mockValidation();
   const authenticationStub = mockAuthentication();
 
