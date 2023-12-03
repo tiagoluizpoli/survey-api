@@ -16,7 +16,7 @@ interface MakeSutResult {
   sut: JwtAdapter;
 }
 
-const makeSut = (): MakeSutResult => {
+export const makeSut = (): MakeSutResult => {
   const secret = 'secret';
   const sut = new JwtAdapter(secret);
   return { secret, sut };
