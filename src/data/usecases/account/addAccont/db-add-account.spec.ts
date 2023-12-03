@@ -7,7 +7,7 @@ import { mockAccountData } from '@/domain/test';
 import {
   mockAddAccountRepository,
   mockHasher,
-  mockNullLoadAccountByEmailRepository,
+  mockSuccessLoadAccountByEmailRepository,
 } from '@/data/test';
 
 interface MakeSutResult {
@@ -22,7 +22,10 @@ const makeSut = (): MakeSutResult => {
 
   const addAccountRepositoryStub = mockAddAccountRepository();
 
-  const loadAccountByEmailRepositoryStub = mockNullLoadAccountByEmailRepository();
+  const loadAccountByEmailRepositoryStub = mockSuccessLoadAccountByEmailRepository();
+  jest
+    .spyOn(loadAccountByEmailRepositoryStub, 'loadByEmail')
+    .mockReturnValue(Promise.resolve(null));
 
   const sut = new DbAddAccount(
     hasherStub,
