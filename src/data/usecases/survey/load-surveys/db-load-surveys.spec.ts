@@ -1,45 +1,7 @@
-import { SurveyModel } from '@/domain';
 import { LoadSurveysRepository } from '@/data';
 import { DbLoadSurveys } from './db-load-surveys';
-
-const makeFakeData = () => {
-  const surveys: SurveyModel[] = [
-    {
-      id: 'any_id',
-      question: 'any_question',
-      answers: [
-        {
-          answer: 'any_answer',
-        },
-      ],
-      date: new Date(),
-    },
-
-    {
-      id: 'other_id',
-      question: 'other_question',
-      answers: [
-        {
-          answer: 'other_answer',
-        },
-      ],
-      date: new Date(),
-    },
-  ];
-
-  return { surveys };
-};
-
-const makeLoadSurveysRepository = (): LoadSurveysRepository => {
-  class LoadSurveysRepositoryStub implements LoadSurveysRepository {
-    loadAll = (): Promise<SurveyModel[]> => {
-      const { surveys } = makeFakeData();
-      return Promise.resolve(surveys);
-    };
-  }
-
-  return new LoadSurveysRepositoryStub();
-};
+import { mockSurveyData } from '@/domain/test';
+import { mockLoadSurveysRepository } from '@/data/test';
 
 interface MakeSutResult {
   sut: DbLoadSurveys;
@@ -47,7 +9,7 @@ interface MakeSutResult {
 }
 
 const makeSut = (): MakeSutResult => {
-  const loadSurveysRepositoryStub = makeLoadSurveysRepository();
+  const loadSurveysRepositoryStub = mockLoadSurveysRepository();
   const sut = new DbLoadSurveys(loadSurveysRepositoryStub);
 
   return { sut, loadSurveysRepositoryStub };
@@ -69,13 +31,13 @@ describe('DbLoadSurveys', () => {
   it('shoud return a List of Surveys on success', async () => {
     // Arrange
     const { sut } = makeSut();
-    const { surveys } = makeFakeData();
+    const { surveysMock } = mockSurveyData();
 
     // Act
     const surveysResult = await sut.load();
 
     // Assert
-    expect(surveysResult).toEqual(surveys);
+    expect(surveysResult).toEqual(surveysMock);
   });
 
   it('shoud throw if LoadSurveyRepository throws', async () => {

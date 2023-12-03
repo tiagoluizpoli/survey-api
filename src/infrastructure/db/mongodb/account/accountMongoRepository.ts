@@ -5,7 +5,7 @@ import {
   LoadAccountByTokenRepository,
   UpdateAccessTokenRepository,
 } from '@/data';
-import { AddAccountModel, AccountModel } from '@/domain';
+import { AddAccountParams, AccountModel } from '@/domain';
 import { MongoHelper } from '../helpers';
 
 export class AccountMongoRepository
@@ -17,7 +17,7 @@ export class AccountMongoRepository
 {
   constructor() {}
 
-  add = async (accountData: AddAccountModel): Promise<AccountModel> => {
+  add = async (accountData: AddAccountParams): Promise<AccountModel> => {
     const accountCollection = await MongoHelper.getCollection('accounts');
     const result = await accountCollection.insertOne(accountData);
     const account = await accountCollection.findOne<WithId<AccountModel>>({

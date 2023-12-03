@@ -1,44 +1,17 @@
-import { AddAccountModel, AddSurveyModel, SurveyModel } from '@/domain';
+import { SurveyModel } from '@/domain';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
 import { Collection } from 'mongodb';
+import { mockAccountData, mockSurveyData } from '@/domain/test';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 let surveyCollection: Collection;
 let surveyResultCollection: Collection;
 let accountCollection: Collection;
 
-interface MakeFakeDataResult {
-  addSurvey: AddSurveyModel;
-  addAccount: AddAccountModel;
-}
-const makeFakeData = (): MakeFakeDataResult => {
-  const addSurvey: AddSurveyModel = {
-    question: 'any_question',
-    answers: [
-      {
-        image: 'any_image',
-        answer: 'any_answer',
-      },
-      {
-        answer: 'any_answer',
-      },
-    ],
-    date: new Date(),
-  };
-
-  const addAccount: AddAccountModel = {
-    name: 'any_name',
-    email: 'any@email.com',
-    password: 'hashed_password',
-  };
-
-  return { addSurvey, addAccount };
-};
-
-const makeSurvey = async (): Promise<SurveyModel> => {
-  const { addSurvey } = makeFakeData();
-  const insertResult = await surveyCollection.insertOne(addSurvey);
+const mockSurvey = async (): Promise<SurveyModel> => {
+  const { addSurveyMock } = mockSurveyData();
+  const insertResult = await surveyCollection.insertOne(addSurveyMock);
   const survey = await surveyCollection.findOne({ _id: insertResult.insertedId });
 
   return {
@@ -49,9 +22,9 @@ const makeSurvey = async (): Promise<SurveyModel> => {
   };
 };
 
-const makeAccount = async (): Promise<string> => {
-  const { addAccount } = makeFakeData();
-  return (await accountCollection.insertOne(addAccount)).insertedId.toString();
+const mockAccount = async (): Promise<string> => {
+  const { addAccountMock } = mockAccountData();
+  return (await accountCollection.insertOne(addAccountMock)).insertedId.toString();
 };
 
 interface MakeSutResult {
@@ -84,8 +57,8 @@ describe('AccountRepository (Mongodb)', () => {
 
   describe('save()', () => {
     it('should add a surveyResult if its new', async () => {
-      const survey = await makeSurvey();
-      const accountId = await makeAccount();
+      const survey = await mockSurvey();
+      const accountId = await mockAccount();
       const { sut } = makeSut();
 
       const surveyResult = await sut.save({
@@ -101,8 +74,8 @@ describe('AccountRepository (Mongodb)', () => {
     });
 
     it('should update a surveyResult if its not new', async () => {
-      const survey = await makeSurvey();
-      const accountId = await makeAccount();
+      const survey = await mockSurvey();
+      const accountId = await mockAccount();
       const res = await surveyResultCollection.insertOne({
         surveyId: survey.id,
         accountId,

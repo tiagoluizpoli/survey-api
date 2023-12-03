@@ -3,9 +3,9 @@ import { forbidden, ok, serverError } from '../helpers';
 import { AuthMiddleware } from './auth-middleware';
 import { AccountModel, LoadAccountByToken } from '@/domain';
 import { HttpRequest } from '../protocols';
+import { mockAccountData } from '@/domain/test';
 
 interface MakeFakeData {
-  fakeAccount: AccountModel;
   httpRequest: HttpRequest;
 }
 
@@ -16,15 +16,7 @@ const makeFakeData = (): MakeFakeData => {
     },
   };
 
-  const fakeAccount: AccountModel = {
-    id: 'valid_id',
-    name: 'valid_name',
-    email: 'valid@email.com',
-    password: 'hashed_password',
-    accessToken: 'valid_access_token',
-  };
-
-  return { fakeAccount, httpRequest };
+  return { httpRequest };
 };
 
 const makeLoadAccountByToken = () => {
@@ -33,8 +25,8 @@ const makeLoadAccountByToken = () => {
     load = (accessToken: string, role?: string | undefined): Promise<AccountModel | null> => {
       accessToken;
       role;
-      const { fakeAccount } = makeFakeData();
-      return Promise.resolve(fakeAccount);
+      const { accountMock } = mockAccountData();
+      return Promise.resolve(accountMock);
     };
   }
   return new LoadAccountByTokenStub();
@@ -92,7 +84,8 @@ describe('Auth Middleware', () => {
   it('should return 200 if LoadAccountByToken returns an account', async () => {
     // Arrange
     const { sut } = makeSut();
-    const { httpRequest, fakeAccount } = makeFakeData();
+    const { httpRequest } = makeFakeData();
+    const { accountMock } = mockAccountData();
 
     // Act
     const httpResponse = await sut.handle(httpRequest);
@@ -100,7 +93,7 @@ describe('Auth Middleware', () => {
     // Assert
     expect(httpResponse).toEqual(
       ok({
-        accountId: fakeAccount.id,
+        accountId: accountMock.id,
       }),
     );
   });

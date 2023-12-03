@@ -1,6 +1,8 @@
 import { HttpRequest, InvalidParamError } from '@/presentation';
 import { EmailValidation } from '.';
 import { EmailValidator } from '../protocols';
+import { throwError } from '@/domain/test';
+import { mockEmailValidator } from '@/validation/test';
 const makeFakeRequest = (): HttpRequest => ({
   body: {
     name: 'any_name',
@@ -10,22 +12,12 @@ const makeFakeRequest = (): HttpRequest => ({
   },
 });
 
-const makeEmailValidator = (): EmailValidator => {
-  class EmailValidatorStub implements EmailValidator {
-    isValid(email: string): boolean {
-      email;
-      return true;
-    }
-  }
-  return new EmailValidatorStub();
-};
-
 interface MakeSutResult {
   sut: EmailValidation;
   emailValidatorStub: EmailValidator;
 }
 const makeSut = (): MakeSutResult => {
-  const emailValidatorStub = makeEmailValidator();
+  const emailValidatorStub = mockEmailValidator();
   const sut = new EmailValidation('email', emailValidatorStub);
   return {
     sut,
@@ -52,9 +44,7 @@ describe('Email Validation', () => {
 
   it('Shoud throw if emailValidator throws', () => {
     const { sut, emailValidatorStub } = makeSut();
-    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
-      throw new Error();
-    });
+    jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(throwError);
 
     const fakeError = new Error();
     fakeError.stack = 'any_stack';

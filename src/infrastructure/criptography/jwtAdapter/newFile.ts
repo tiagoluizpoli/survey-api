@@ -1,26 +1,6 @@
 import jwt from 'jsonwebtoken';
-import { JwtAdapter } from './jwt.adapter';
 import { throwError } from '@/domain/test';
-
-jest.mock('jsonwebtoken', () => ({
-  sign: async (): Promise<string> => {
-    return Promise.resolve('any_token');
-  },
-  verify: async (): Promise<string> => {
-    return Promise.resolve('any_value');
-  },
-}));
-
-interface MakeSutResult {
-  secret: string;
-  sut: JwtAdapter;
-}
-
-export const makeSut = (): MakeSutResult => {
-  const secret = 'secret';
-  const sut = new JwtAdapter(secret);
-  return { secret, sut };
-};
+import { makeSut } from './jwt.adapter.spec';
 
 describe('Jwt Adapter', () => {
   describe('sign()', () => {

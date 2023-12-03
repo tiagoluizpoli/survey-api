@@ -1,23 +1,19 @@
-import {
-  AddAccount,
-  AddAccountModel,
-  AccountModel,
-  Authentication,
-  AuthenticationModel,
-} from '@/domain';
+import { AddAccount, Authentication } from '@/domain';
 import { AccountAlreadyExistsError, MissingParamError } from '../../../errors';
 
 import { SignUpController } from './signupController';
 import { HttpRequest, Validation } from '../../../protocols';
 import { badRequest, forbidden, ok, serverError } from '../../../helpers';
 
+import { mockAddAccount, mockAuthentication } from '@/presentation/test';
+import { mockValidation } from '@/validation/test';
+
 interface makeFakeDataResult {
   httpRequest: HttpRequest;
-  fakeAccount: AccountModel;
 }
 
 const makeFakeSignupData = (): makeFakeDataResult => {
-  const fakeHttpRequest: HttpRequest = {
+  const httpRequest: HttpRequest = {
     body: {
       name: 'any_name',
       email: 'any@email.com',
@@ -26,48 +22,9 @@ const makeFakeSignupData = (): makeFakeDataResult => {
     },
   };
 
-  const fakeAccountModel = {
-    id: 'valid_id',
-    name: 'valid_name',
-    email: 'valid_email',
-    password: 'valid_password',
-  };
-
   return {
-    httpRequest: fakeHttpRequest,
-    fakeAccount: fakeAccountModel,
+    httpRequest,
   };
-};
-
-const makeAddAccount = (): AddAccount => {
-  class AddAccountStub implements AddAccount {
-    async add(account: AddAccountModel): Promise<AccountModel> {
-      account;
-      const { fakeAccount } = makeFakeSignupData();
-      return await Promise.resolve(fakeAccount);
-    }
-  }
-  return new AddAccountStub();
-};
-
-const makeAuthentication = (): Authentication => {
-  class AuthenticationStub implements Authentication {
-    authenticate = (authentication: AuthenticationModel): Promise<string> => {
-      authentication;
-      return Promise.resolve('any_token');
-    };
-  }
-  return new AuthenticationStub();
-};
-
-const makeValidation = (): Validation => {
-  class ValidationStub implements Validation {
-    validate(input: unknown): Error | null {
-      input;
-      return null;
-    }
-  }
-  return new ValidationStub();
 };
 
 interface MakeSutResult {
@@ -77,9 +34,9 @@ interface MakeSutResult {
   authenticationStub: Authentication;
 }
 const makeSut = (): MakeSutResult => {
-  const addAccountStub = makeAddAccount();
-  const validationStub = makeValidation();
-  const authenticationStub = makeAuthentication();
+  const addAccountStub = mockAddAccount();
+  const validationStub = mockValidation();
+  const authenticationStub = mockAuthentication();
 
   const sut = new SignUpController(addAccountStub, validationStub, authenticationStub);
   return {
