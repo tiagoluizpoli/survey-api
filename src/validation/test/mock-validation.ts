@@ -4,10 +4,7 @@ import { EmailValidator } from '@/validation';
 export const mockEmailValidator = (): EmailValidator => {
   class EmailValidatorStub implements EmailValidator {
     isValid(email: string): boolean {
-      if (email) {
-        // eslint-disable-next-line no-console
-        console.log(email);
-      }
+      email;
       return true;
     }
   }
