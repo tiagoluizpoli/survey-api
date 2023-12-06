@@ -1,7 +1,7 @@
 import { SurveyModel } from '@/domain';
 import { MongoHelper } from '../helpers/mongo.helper';
 import { SurveyResultMongoRepository } from './survey-result-mongo-repository';
-import { Collection } from 'mongodb';
+import { Collection, ObjectId, WithId } from 'mongodb';
 import { mockAccountData, mockSurveyData } from '@/domain/test';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,14 +12,16 @@ let accountCollection: Collection;
 const mockSurvey = async (): Promise<SurveyModel> => {
   const { addSurveyMock } = mockSurveyData();
   const insertResult = await surveyCollection.insertOne(addSurveyMock);
-  const survey = await surveyCollection.findOne({ _id: insertResult.insertedId });
+  const survey = await surveyCollection.findOne<SurveyModel>({ _id: insertResult.insertedId });
 
-  return {
-    id: insertResult.insertedId.toString(),
-    question: survey!.question,
-    answers: survey!.answers,
-    date: survey!.date,
-  };
+  return MongoHelper.map<SurveyModel>(survey as WithId<SurveyModel>);
+
+  // return {
+  //   id: insertResult.insertedId.toString(),
+  //   question: survey!.question,
+  //   answers: survey!.answers,
+  //   date: survey!.date,
+  // };
 };
 
 const mockAccount = async (): Promise<string> => {
@@ -69,16 +71,18 @@ describe('AccountRepository (Mongodb)', () => {
       });
 
       expect(surveyResult).toBeTruthy();
-      expect(surveyResult.id).toBeTruthy();
-      expect(surveyResult.answer).toEqual(survey.answers[0].answer);
+      expect(surveyResult.surveyId.toString()).toBe(survey.id);
+      expect(surveyResult.answers[0].count).toBe(1);
+      expect(surveyResult.answers[0].percent).toBe(100);
     });
 
     it('should update a surveyResult if its not new', async () => {
       const survey = await mockSurvey();
       const accountId = await mockAccount();
-      const res = await surveyResultCollection.insertOne({
-        surveyId: survey.id,
-        accountId,
+
+      await surveyResultCollection.insertOne({
+        surveyId: new ObjectId(survey.id),
+        accountId: new ObjectId(accountId),
         answer: survey.answers[0].answer,
         date: new Date(),
       });
@@ -92,8 +96,10 @@ describe('AccountRepository (Mongodb)', () => {
       });
 
       expect(surveyResult).toBeTruthy();
-      expect(surveyResult.id).toEqual(res.insertedId.toString());
-      expect(surveyResult.answer).toEqual(survey.answers[1].answer);
+      expect(surveyResult.surveyId.toString()).toEqual(survey.id);
+      expect(surveyResult.answers[0].answer).toBe(survey.answers[1].answer);
+      expect(surveyResult.answers[0].count).toBe(1);
+      expect(surveyResult.answers[0].percent).toBe(100);
     });
   });
 });

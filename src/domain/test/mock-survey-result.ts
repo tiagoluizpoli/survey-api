@@ -8,8 +8,21 @@ export const mockSurveyResultData = () => {
     answer: 'any_answer',
   };
   const surveyResultMock: SurveyResultModel = {
-    id: 'any_id',
-    ...saveSurveyResultMock,
+    surveyId: 'any_survey_id',
+    question: 'any_question',
+    answers: [
+      {
+        answer: 'any_answer 1',
+        count: 1,
+        percent: 50,
+      },
+      {
+        answer: 'any_answer 2',
+        count: 1,
+        percent: 50,
+      },
+    ],
+    date: new Date(),
   };
 
   return { surveyResultMock, saveSurveyResultMock };

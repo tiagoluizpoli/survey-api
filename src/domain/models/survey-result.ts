@@ -1,8 +1,13 @@
-import { AuditableEntity } from './auditableEntity';
-
-export interface SurveyResultModel extends AuditableEntity {
+export interface SurveyResultModel {
   surveyId: string;
-  accountId: string;
-  answer: string;
+  question: string;
+  answers: SurveyResultAnswerModel[];
   date: Date;
+}
+
+interface SurveyResultAnswerModel {
+  image?: string;
+  answer: string;
+  count: number;
+  percent: number;
 }
