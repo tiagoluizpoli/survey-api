@@ -3,6 +3,7 @@ import { mockLoadSurveyByIdRepository, mockLoadSurveyResultRepository } from '@/
 import { LoadSurveyResult } from '@/domain';
 import { DbLoadSurveyResult } from './db-load-survey-result';
 import { mockSurveyResultData, throwError } from '@/domain/test';
+import mockDate from 'mockdate';
 
 interface MakeSutResult {
   sut: LoadSurveyResult;
@@ -18,6 +19,14 @@ const makeSut = (): MakeSutResult => {
 };
 
 describe('DbLoadSurveyResult usecase', () => {
+  beforeAll(() => {
+    mockDate.set(new Date());
+  });
+
+  afterAll(() => {
+    mockDate.reset();
+  });
+
   it('shoud call LoadSurveyResultRepository with correct surveyId', async () => {
     // Arrange
     const { sut, loadSurveyResultRepositoryStub } = makeSut();
@@ -41,17 +50,6 @@ describe('DbLoadSurveyResult usecase', () => {
     await expect(promise).rejects.toThrow();
   });
 
-  it('shoud return the surveyResult on success', async () => {
-    // Arrange
-    const { sut } = makeSut();
-    const { surveyResultMock } = mockSurveyResultData();
-    // Act
-    const surveyResult = await sut.load('any_survey_id');
-
-    // Assert
-    expect(surveyResult).toEqual(surveyResultMock);
-  });
-
   it('shoud call LoadSurveyByIdRepository if LoadSurveyResultRepository returns undefined', async () => {
     // Arrange
     const { sut, loadSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub } = makeSut();
@@ -64,5 +62,31 @@ describe('DbLoadSurveyResult usecase', () => {
 
     // Assert
     expect(loadSurveyByIdSpy).toHaveBeenCalledWith('any_survey_id');
+  });
+
+  it('shoud return surveyResult with all answers with count and percentage 0 if LoadSurveyResultRepository returns undefined', async () => {
+    // Arrange
+    const { sut, loadSurveyResultRepositoryStub } = makeSut();
+    const { surveyResultMock } = mockSurveyResultData();
+
+    jest
+      .spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
+      .mockReturnValueOnce(Promise.resolve(undefined));
+    // Act
+    const surveyResult = await sut.load('any_survey_id');
+
+    // Assert
+    expect(surveyResult).toEqual(surveyResultMock);
+  });
+
+  it('shoud return the surveyResult on success', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    const { surveyResultMock } = mockSurveyResultData();
+    // Act
+    const surveyResult = await sut.load('any_survey_id');
+
+    // Assert
+    expect(surveyResult).toEqual(surveyResultMock);
   });
 });

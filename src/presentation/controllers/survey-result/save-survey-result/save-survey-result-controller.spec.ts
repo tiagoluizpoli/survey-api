@@ -14,10 +14,10 @@ interface MakeFakeData {
 const makeFakeData = (): MakeFakeData => {
   const httpRequest: HttpRequest = {
     params: {
-      surveyId: 'any_survey_id',
+      surveyId: 'any_id',
     },
     body: {
-      answer: 'any_answer',
+      answer: 'any_answer 1',
     },
     accountId: 'any_account_id',
   };
@@ -94,7 +94,7 @@ describe('SaveSurveyResultController', () => {
     // Act
     const httpResponse = await sut.handle({
       params: {
-        surveyId: 'any_survey_id',
+        surveyId: 'any_id',
       },
       body: {
         answer: 'wrong_answer',
