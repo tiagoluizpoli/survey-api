@@ -4,7 +4,6 @@
 
 - [ ] Recebe uma requisição do tipo **GET** na rota **/api/surveys/{survey_id}/results**
 - [ ] Valida se a requisição foi feita por um **usuário**
-- [ ] Retorna **204** se não houver nenhum, resultado de enquete
 - [ ] Retorna **200** com os dados do resultado de enquete
 ## Excessões
 
