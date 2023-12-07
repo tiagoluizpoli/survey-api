@@ -2,8 +2,9 @@ import { LoadSurveyById } from '@/domain';
 import { Controller, HttpRequest } from '@/presentation/protocols';
 import { mockLoadSurveyById } from '@/presentation/test';
 import { LoadSurveyResultController } from './load-survey-result-controller';
-import { forbidden } from '@/presentation/helpers';
+import { forbidden, serverError } from '@/presentation/helpers';
 import { InvalidParamError } from '@/presentation/errors';
+import { throwError } from '@/domain/test';
 
 const mockData = () => {
   const httpRequest: HttpRequest = {
@@ -49,5 +50,18 @@ describe('LoadSurveyResultController', () => {
 
     // Assert
     expect(httpResponse).toEqual(forbidden(new InvalidParamError('surveyId')));
+  });
+
+  it('shoud return 500 if LoadSurvetById throws', async () => {
+    // Arrange
+    const { sut, loadSurveyByIdStub } = makeSut();
+    jest.spyOn(loadSurveyByIdStub, 'loadById').mockImplementationOnce(throwError);
+    const { httpRequest } = mockData();
+
+    // Act
+    const httpResponse = await sut.handle(httpRequest);
+
+    // Assert
+    expect(httpResponse).toEqual(serverError(new Error()));
   });
 });
