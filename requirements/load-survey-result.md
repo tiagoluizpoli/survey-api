@@ -10,4 +10,4 @@
 - [ ] Retorna erro **404** se a API não existir
 - [ ] Retorna erro **403** se não for um usuário
 - [ ] Retorna erro **500** se der erro ao tentar listar o resultado da enquete
-- [ ] Retorna erro **500** se der erro ao tentar carregar a enquete
+- [x] Retorna erro **500** se der erro ao tentar carregar a enquete
