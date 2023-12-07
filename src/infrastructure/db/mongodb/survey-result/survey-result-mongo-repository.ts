@@ -1,9 +1,11 @@
-import { SaveSurveyResultRepository } from '@/data';
+import { LoadSurveyResultRepository, SaveSurveyResultRepository } from '@/data';
 import { SaveSurveyResultParams, SurveyResultModel } from '@/domain';
 import { MongoHelper, QueryBuilder } from '../helpers';
 import { ObjectId } from 'mongodb';
 
-export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
+export class SurveyResultMongoRepository
+  implements SaveSurveyResultRepository, LoadSurveyResultRepository
+{
   constructor() {}
   save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel> => {
     const surveyResultCollection = await MongoHelper.getCollection('surveyResults');
@@ -29,7 +31,7 @@ export class SurveyResultMongoRepository implements SaveSurveyResultRepository {
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private loadBySurveyId = async (surveyId: string): Promise<SurveyResultModel> => {
+  loadBySurveyId = async (surveyId: string): Promise<SurveyResultModel> => {
     const surveyResultCollection = await MongoHelper.getCollection('surveyResults');
     const query = new QueryBuilder()
       .match({

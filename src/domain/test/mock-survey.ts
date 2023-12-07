@@ -5,12 +5,16 @@ export const mockSurveyData = () => {
     question: 'any_question',
     answers: [
       {
+        answer: 'any_answer_1',
         image: 'any_image',
-        answer: 'any_answer',
       },
       {
-        image: 'other_image',
-        answer: 'other_answer',
+        answer: 'any_answer_2',
+        image: 'any_image',
+      },
+      {
+        answer: 'any_answer_3',
+        image: 'any_image',
       },
     ],
     date: new Date(),
