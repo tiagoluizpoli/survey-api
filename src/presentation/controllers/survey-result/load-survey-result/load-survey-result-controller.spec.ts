@@ -2,9 +2,9 @@ import { LoadSurveyById, LoadSurveyResult } from '@/domain';
 import { Controller, HttpRequest } from '@/presentation/protocols';
 import { mockLoadSurveyById, mockLoadSurveyResult } from '@/presentation/test';
 import { LoadSurveyResultController } from './load-survey-result-controller';
-import { forbidden, serverError } from '@/presentation/helpers';
+import { forbidden, ok, serverError } from '@/presentation/helpers';
 import { InvalidParamError } from '@/presentation/errors';
-import { throwError } from '@/domain/test';
+import { mockSurveyResultData, throwError } from '@/domain/test';
 
 const mockData = () => {
   const httpRequest: HttpRequest = {
@@ -91,5 +91,18 @@ describe('LoadSurveyResultController', () => {
 
     // Assert
     expect(httpResponse).toEqual(serverError(new Error()));
+  });
+
+  it('shoud return 200 on success', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    const { httpRequest } = mockData();
+    const { surveyResultMock } = mockSurveyResultData();
+
+    // Act
+    const res = await sut.handle(httpRequest);
+
+    // Assert
+    expect(res).toEqual(ok(surveyResultMock));
   });
 });
