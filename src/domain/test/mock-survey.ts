@@ -85,7 +85,10 @@ export const mockSurveyData = () => {
     question: 'any_question',
     answers: [
       {
-        answer: 'any_answer',
+        answer: 'any_answer 1',
+      },
+      {
+        answer: 'any_answer 2',
       },
     ],
     date: new Date(),
