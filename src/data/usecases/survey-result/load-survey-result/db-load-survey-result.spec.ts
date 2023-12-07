@@ -2,7 +2,7 @@ import { LoadSurveyResultRepository } from '@/data';
 import { mockLoadSurveyResultRepository } from '@/data/test';
 import { LoadSurveyResult } from '@/domain';
 import { DbLoadSurveyResult } from './db-load-survey-result';
-import { throwError } from '@/domain/test';
+import { mockSurveyResultData, throwError } from '@/domain/test';
 
 interface MakeSutResult {
   sut: LoadSurveyResult;
@@ -37,5 +37,16 @@ describe('DbLoadSurveyResult usecase', () => {
 
     // Assert
     await expect(promise).rejects.toThrow();
+  });
+
+  it('shoud return the surveyResult on success', async () => {
+    // Arrange
+    const { sut } = makeSut();
+    const { surveyResultMock } = mockSurveyResultData();
+    // Act
+    const surveyResult = await sut.load('any_survey_id');
+
+    // Assert
+    expect(surveyResult).toEqual(surveyResultMock);
   });
 });
