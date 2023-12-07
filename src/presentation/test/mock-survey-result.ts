@@ -4,6 +4,7 @@ import {
   SaveSurveyResult,
   SaveSurveyResultParams,
   SurveyResultModel,
+  LoadSurveyResult,
 } from '@/domain';
 import { mockSurveyData, mockSurveyResultData } from '@/domain/test';
 
@@ -29,4 +30,16 @@ export const mockSaveSurveyResult = (): SaveSurveyResult => {
   }
 
   return new SaveSurveyResultStub();
+};
+
+export const mockLoadSurveyResult = (): LoadSurveyResult => {
+  class LoadSurveyResultStub implements LoadSurveyResult {
+    load = async (surveyId: string): Promise<SurveyResultModel> => {
+      surveyId;
+      const { surveyResultMock } = mockSurveyResultData();
+      return Promise.resolve(surveyResultMock);
+    };
+  }
+
+  return new LoadSurveyResultStub();
 };
