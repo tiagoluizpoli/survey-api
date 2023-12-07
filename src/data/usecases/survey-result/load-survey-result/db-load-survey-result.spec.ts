@@ -2,6 +2,7 @@ import { LoadSurveyResultRepository } from '@/data';
 import { mockLoadSurveyResultRepository } from '@/data/test';
 import { LoadSurveyResult } from '@/domain';
 import { DbLoadSurveyResult } from './db-load-survey-result';
+import { throwError } from '@/domain/test';
 
 interface MakeSutResult {
   sut: LoadSurveyResult;
@@ -24,5 +25,17 @@ describe('DbLoadSurveyResult usecase', () => {
 
     // Assert
     expect(loadBySurveyIdSpy).toHaveBeenCalledWith('any_survey_id');
+  });
+
+  it('shoud throw if LoadSurveyResultRepository throws', async () => {
+    // Arrange
+    const { sut, loadSurveyResultRepositoryStub } = makeSut();
+    jest.spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId').mockImplementationOnce(throwError);
+
+    // Act
+    const promise = sut.load('any_survey_id');
+
+    // Assert
+    await expect(promise).rejects.toThrow();
   });
 });
