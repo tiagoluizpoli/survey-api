@@ -146,15 +146,15 @@ describe('AccountRepository (Mongodb)', () => {
       const surveyResult = await sut.loadBySurveyId(survey.id);
 
       // Assert
-      expect(surveyResult).toBeTruthy();
-      expect(surveyResult.surveyId.toString()).toEqual(survey.id);
-      expect(surveyResult.answers[0].answer).toBe(survey.answers[0].answer);
-      expect(surveyResult.answers[0].count).toBe(3);
-      expect(surveyResult.answers[0].percent).toBe(60);
-      expect(surveyResult.answers[1].count).toBe(2);
-      expect(surveyResult.answers[1].percent).toBe(40);
-      expect(surveyResult.answers[2].count).toBe(0);
-      expect(surveyResult.answers[2].percent).toBe(0);
+      expect(surveyResult!).toBeTruthy();
+      expect(surveyResult!.surveyId.toString()).toEqual(survey.id);
+      expect(surveyResult!.answers[0].answer).toBe(survey.answers[0].answer);
+      expect(surveyResult!.answers[0].count).toBe(3);
+      expect(surveyResult!.answers[0].percent).toBe(60);
+      expect(surveyResult!.answers[1].count).toBe(2);
+      expect(surveyResult!.answers[1].percent).toBe(40);
+      expect(surveyResult!.answers[2].count).toBe(0);
+      expect(surveyResult!.answers[2].percent).toBe(0);
     });
   });
 });

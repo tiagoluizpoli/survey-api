@@ -1,5 +1,5 @@
-import { LoadSurveyResultRepository } from '@/data';
-import { mockLoadSurveyResultRepository } from '@/data/test';
+import { LoadSurveyByIdRepository, LoadSurveyResultRepository } from '@/data';
+import { mockLoadSurveyByIdRepository, mockLoadSurveyResultRepository } from '@/data/test';
 import { LoadSurveyResult } from '@/domain';
 import { DbLoadSurveyResult } from './db-load-survey-result';
 import { mockSurveyResultData, throwError } from '@/domain/test';
@@ -7,12 +7,14 @@ import { mockSurveyResultData, throwError } from '@/domain/test';
 interface MakeSutResult {
   sut: LoadSurveyResult;
   loadSurveyResultRepositoryStub: LoadSurveyResultRepository;
+  loadSurveyByIdRepositoryStub: LoadSurveyByIdRepository;
 }
 
 const makeSut = (): MakeSutResult => {
   const loadSurveyResultRepositoryStub = mockLoadSurveyResultRepository();
-  const sut = new DbLoadSurveyResult(loadSurveyResultRepositoryStub);
-  return { sut, loadSurveyResultRepositoryStub };
+  const loadSurveyByIdRepositoryStub = mockLoadSurveyByIdRepository();
+  const sut = new DbLoadSurveyResult(loadSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub);
+  return { sut, loadSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub };
 };
 
 describe('DbLoadSurveyResult usecase', () => {
@@ -48,5 +50,19 @@ describe('DbLoadSurveyResult usecase', () => {
 
     // Assert
     expect(surveyResult).toEqual(surveyResultMock);
+  });
+
+  it('shoud call LoadSurveyByIdRepository if LoadSurveyResultRepository returns undefined', async () => {
+    // Arrange
+    const { sut, loadSurveyResultRepositoryStub, loadSurveyByIdRepositoryStub } = makeSut();
+    const loadSurveyByIdSpy = jest.spyOn(loadSurveyByIdRepositoryStub, 'loadById');
+    jest
+      .spyOn(loadSurveyResultRepositoryStub, 'loadBySurveyId')
+      .mockReturnValueOnce(Promise.resolve(undefined));
+    // Act
+    await sut.load('any_survey_id');
+
+    // Assert
+    expect(loadSurveyByIdSpy).toHaveBeenCalledWith('any_survey_id');
   });
 });
