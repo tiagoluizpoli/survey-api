@@ -1,10 +1,15 @@
-import { SaveSurveyResultRepository } from '@/data';
+import { LoadSurveyResultRepository, SaveSurveyResultRepository } from '@/data';
 import { SaveSurveyResult, SaveSurveyResultParams, SurveyResultModel } from '@/domain';
 
 export class DbSaveSurveyResult implements SaveSurveyResult {
-  constructor(private readonly saveSurveyResultRepository: SaveSurveyResultRepository) {}
+  constructor(
+    private readonly saveSurveyResultRepository: SaveSurveyResultRepository,
+    private readonly loadSurveyResultRepository: LoadSurveyResultRepository,
+  ) {}
   save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel> => {
-    const surveyResult = await this.saveSurveyResultRepository.save(data);
-    return surveyResult;
+    const { surveyId } = data;
+    await this.saveSurveyResultRepository.save(data);
+
+    return await this.loadSurveyResultRepository.loadBySurveyId(surveyId);
   };
 }

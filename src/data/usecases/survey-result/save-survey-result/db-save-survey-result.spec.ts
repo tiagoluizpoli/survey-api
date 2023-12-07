@@ -1,22 +1,27 @@
 import { SaveSurveyResult } from '@/domain';
-import { SaveSurveyResultRepository } from '@/data';
+import { LoadSurveyResultRepository, SaveSurveyResultRepository } from '@/data';
 
 import { DbSaveSurveyResult } from './db-save-survey-result';
 
 import mockDate from 'mockdate';
-import { mockSurveyResultData } from '@/domain/test';
-import { mockSaveSurvayResultRepository } from '@/data/test';
+import { mockSurveyResultData, throwError } from '@/domain/test';
+import { mockLoadSurveyResultRepository, mockSaveSurvayResultRepository } from '@/data/test';
 
 interface MakeSutResult {
   sut: SaveSurveyResult;
   saveSurvayResultRepositoryStub: SaveSurveyResultRepository;
+  loadSurvayResultRepositoryStub: LoadSurveyResultRepository;
 }
 
 const makeSut = (): MakeSutResult => {
   const saveSurvayResultRepositoryStub = mockSaveSurvayResultRepository();
-  const sut = new DbSaveSurveyResult(saveSurvayResultRepositoryStub);
+  const loadSurvayResultRepositoryStub = mockLoadSurveyResultRepository();
+  const sut = new DbSaveSurveyResult(
+    saveSurvayResultRepositoryStub,
+    loadSurvayResultRepositoryStub,
+  );
 
-  return { sut, saveSurvayResultRepositoryStub };
+  return { sut, saveSurvayResultRepositoryStub, loadSurvayResultRepositoryStub };
 };
 
 describe('DbSaveSurveyResult UseCase', () => {
@@ -44,6 +49,29 @@ describe('DbSaveSurveyResult UseCase', () => {
     jest
       .spyOn(saveSurvayResultRepositoryStub, 'save')
       .mockReturnValueOnce(Promise.reject(new Error()));
+    const { saveSurveyResultMock } = mockSurveyResultData();
+
+    const promise = sut.save(saveSurveyResultMock);
+
+    await expect(promise).rejects.toThrow();
+  });
+
+  it('shoud call LoadSurveyResultRepository with correct values', async () => {
+    // Arrange
+    const { sut, loadSurvayResultRepositoryStub } = makeSut();
+    const { saveSurveyResultMock } = mockSurveyResultData();
+    const loadSpy = jest.spyOn(loadSurvayResultRepositoryStub, 'loadBySurveyId');
+
+    // Act
+    await sut.save(saveSurveyResultMock);
+
+    // Assert
+    expect(loadSpy).toHaveBeenCalledWith(saveSurveyResultMock.surveyId);
+  });
+
+  it('should throw if LoadSurveyResultRepository throws', async () => {
+    const { sut, loadSurvayResultRepositoryStub } = makeSut();
+    jest.spyOn(loadSurvayResultRepositoryStub, 'loadBySurveyId').mockImplementationOnce(throwError);
     const { saveSurveyResultMock } = mockSurveyResultData();
 
     const promise = sut.save(saveSurveyResultMock);

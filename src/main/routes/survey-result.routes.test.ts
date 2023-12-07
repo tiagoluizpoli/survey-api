@@ -14,7 +14,7 @@ const makeAccessToken = async (): Promise<MakeAccessTokenResult> => {
     password: '123',
   });
   const id = account.insertedId;
-  const accessToken = await sign({ id }, env.jwtSecret);
+  const accessToken = sign({ id }, env.jwtSecret);
   await accountCollection.updateOne(
     {
       _id: id,

@@ -7,7 +7,7 @@ export class SurveyResultMongoRepository
   implements SaveSurveyResultRepository, LoadSurveyResultRepository
 {
   constructor() {}
-  save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel> => {
+  save = async (data: SaveSurveyResultParams): Promise<void> => {
     const surveyResultCollection = await MongoHelper.getCollection('surveyResults');
     await surveyResultCollection.findOneAndUpdate(
       {
@@ -25,9 +25,7 @@ export class SurveyResultMongoRepository
       },
     );
 
-    const surveyResult = await this.loadBySurveyId(data.surveyId);
-
-    return surveyResult;
+    await this.loadBySurveyId(data.surveyId);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

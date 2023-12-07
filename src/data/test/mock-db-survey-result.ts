@@ -4,10 +4,10 @@ import { LoadSurveyResultRepository, SaveSurveyResultRepository } from '@/data';
 
 export const mockSaveSurvayResultRepository = (): SaveSurveyResultRepository => {
   class SaveSurvayResultRepositoryStub implements SaveSurveyResultRepository {
-    save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel> => {
+    save = async (data: SaveSurveyResultParams): Promise<void> => {
       data;
-      const { surveyResultMock } = mockSurveyResultData();
-      return Promise.resolve(surveyResultMock);
+
+      return Promise.resolve(undefined);
     };
   }
 
