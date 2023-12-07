@@ -29,7 +29,7 @@ export class SurveyResultMongoRepository
   };
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  loadBySurveyId = async (surveyId: string): Promise<SurveyResultModel> => {
+  loadBySurveyId = async (surveyId: string): Promise<SurveyResultModel | undefined> => {
     const surveyResultCollection = await MongoHelper.getCollection('surveyResults');
     const query = new QueryBuilder()
       .match({
