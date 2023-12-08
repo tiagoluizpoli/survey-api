@@ -1,4 +1,4 @@
-import { SurveyResultModel } from '../../models/survey-result.model.ts';
+import { SurveyResultModel } from '@/domain';
 
 export interface SaveSurveyResultParams {
   surveyId: string;
@@ -8,5 +8,5 @@ export interface SaveSurveyResultParams {
 }
 
 export interface SaveSurveyResult {
-  save: (data: SaveSurveyResultParams) => Promise<SurveyResultModel>;
+  save: (data: SaveSurveyResultParams) => Promise<SurveyResultModel | undefined>;
 }

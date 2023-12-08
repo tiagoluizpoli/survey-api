@@ -22,7 +22,7 @@ export const mockLoadSurveyById = (): LoadSurveyById => {
 
 export const mockSaveSurveyResult = (): SaveSurveyResult => {
   class SaveSurveyResultStub implements SaveSurveyResult {
-    save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel> => {
+    save = async (data: SaveSurveyResultParams): Promise<SurveyResultModel | undefined> => {
       data;
       const { surveyResultMock } = mockSurveyResultData();
       return Promise.resolve(surveyResultMock);
