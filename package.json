@@ -1,6 +1,6 @@
 {
   "name": "clean-ts-api",
-  "version": "2.2.0",
+  "version": "2.3.0",
   "main": "index.js",
   "repository": "git@github.com:tiagoluizpoli/clean-ts-api.git",
   "author": "Tiago Poli <tiagoluizpoli@gmail.com>",
