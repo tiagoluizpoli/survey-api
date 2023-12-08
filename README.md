@@ -1,4 +1,4 @@
-# **Clean Node API**
+# **Survey Api**
 
 [![alt text](./public/img/logo-course.png "Link para o treinamento")](https://www.udemy.com/course/tdd-com-mango/?referralCode=B53CE5CA2B9AFA5A6FA1)
 
@@ -66,19 +66,17 @@ O objetivo do treinamento é mostgrar como criar uma API com uma arquitetura bem
 * Docker
 * Jest
 * MongoDb
-* Travis CI
-* Swagger
 * Bcrypt
 * JsonWebToken
 * Faker
 * Coveralls
 * Validator
 * Express
-* Apollo Server Express
+<!-- * Apollo Server Express
 * Graphql
 * Graphql ISO Date
 * Graphql Scalars
-* Graphql Tools
+* Graphql Tools -->
 * Supertest
 * Husky
 * Lint Staged
@@ -97,18 +95,16 @@ O objetivo do treinamento é mostgrar como criar uma API com uma arquitetura bem
 
 > ## Features do Node
 
-* Documentação de API com Swagger
 * API Rest com Express
-* GraphQL com Apollo Server
+<!-- * GraphQL com Apollo Server -->
 * Log de Erro
 * Segurança (Hashing, Encryption e Encoding)
 * CORS
 * Middlewares
 * Nível de Acesso nas Rotas (Admin, User e Anônimo)
-* Deploy no Heroku
 * Servir Arquivos Estáticos
 
-> ## Features do GraphQL
+<!-- > ## Features do GraphQL
 
 * Types
 * Queries
@@ -117,6 +113,8 @@ O objetivo do treinamento é mostgrar como criar uma API com uma arquitetura bem
 * Directives
 * Scalars
 * Plugins
+* Type Definitions
+* Error Handling -->
 
 > ## Features do Git
 
@@ -143,19 +141,10 @@ O objetivo do treinamento é mostgrar como criar uma API com uma arquitetura bem
 * Deploy
 * Uso de Breakpoints
 
-> ## Features do GraphQL
-
-* Resolvers
-* Type Definitions
-* Directives
-* Scalars
-* Plugins
-* Error Handling
-
 > ## Features de Testes
 
 * Testes Unitários
-* Testes de Integração (API Rest & GraphQL)
+* Testes de Integração (API Rest)
 * Cobertura de Testes
 * Test Doubles
 * Mocks
