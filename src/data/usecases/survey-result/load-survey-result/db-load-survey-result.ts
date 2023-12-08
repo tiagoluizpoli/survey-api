@@ -1,6 +1,5 @@
 import { LoadSurveyByIdRepository, LoadSurveyResultRepository } from '@/data';
 import { LoadSurveyResult, SurveyResultModel } from '@/domain';
-import { mockSurveyResultData } from '@/domain/test';
 
 export class DbLoadSurveyResult implements LoadSurveyResult {
   constructor(
@@ -19,6 +18,6 @@ export class DbLoadSurveyResult implements LoadSurveyResult {
         answers: survey!.answers.map((answer) => ({ ...answer, count: 0, percent: 0 })),
       };
     }
-    return mockSurveyResultData().surveyResultMock;
+    return surveyResult;
   };
 }

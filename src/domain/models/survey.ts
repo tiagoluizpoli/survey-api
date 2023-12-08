@@ -1,6 +1,6 @@
 import { AuditableEntity } from './auditableEntity';
 
-interface SurveyAnswerModel {
+export interface SurveyAnswerModel {
   image?: string;
   answer: string;
 }
