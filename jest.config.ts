@@ -7,6 +7,7 @@ const config: Config = {
     '<rootDir>/src/**/*.ts',
     '!<rootDir>/src/main/**',
     '!<rootDir>/src/**/*index.ts',
+    '!<rootDir>/src/**/*.model.ts',
     '!**/test/**'
   ],
   coverageDirectory: 'coverage',

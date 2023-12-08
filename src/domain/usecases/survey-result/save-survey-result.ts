@@ -1,4 +1,4 @@
-import { SurveyResultModel } from '../../models/survey-result';
+import { SurveyResultModel } from '../../models/survey-result.model.ts';
 
 export interface SaveSurveyResultParams {
   surveyId: string;

@@ -34,9 +34,6 @@ export class SignUpController implements Controller {
       });
       return ok({ accessToken });
     } catch (error) {
-      if (error instanceof AccountAlreadyExistsError) {
-        return badRequest(error);
-      }
       return serverError(error as Error);
     }
   };

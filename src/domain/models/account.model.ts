@@ -1,4 +1,4 @@
-import { AuditableEntity } from './auditableEntity';
+import { AuditableEntity } from './auditable-entity.model';
 
 export interface AccountModel extends AuditableEntity {
   name: string;
